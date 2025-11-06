@@ -124,14 +124,14 @@ export function Courses({ currentUser }: CoursesProps) {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-blue-600 h-2 rounded-full transition-all"
+                        className="bg-yellow-500 h-2 rounded-full transition-all"
                         style={{ width: `${progressMap[course.id]}%` }}
                       />
                     </div>
                   </div>
                 )}
 
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                <button className="w-full bg-yellow-500 text-white py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-colors flex items-center justify-center gap-2">
                   <Play size={18} />
                   {progressMap[course.id] > 0 ? 'Continue Learning' : 'Start Course'}
                 </button>

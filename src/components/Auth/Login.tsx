@@ -53,7 +53,7 @@ export function Login({ onSuccess, onSwitchToRegister }: LoginProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="you@example.com"
             />
           </div>
@@ -68,7 +68,7 @@ export function Login({ onSuccess, onSwitchToRegister }: LoginProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="••••••••"
             />
           </div>
@@ -76,7 +76,7 @@ export function Login({ onSuccess, onSwitchToRegister }: LoginProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
@@ -87,7 +87,7 @@ export function Login({ onSuccess, onSwitchToRegister }: LoginProps) {
             Don't have an account?{' '}
             <button
               onClick={onSwitchToRegister}
-              className="text-blue-600 hover:text-blue-700 font-semibold"
+              className="text-yellow-600 hover:text-blue-700 font-semibold"
             >
               Sign Up
             </button>

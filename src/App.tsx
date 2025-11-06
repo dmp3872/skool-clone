@@ -90,7 +90,7 @@ function App() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-500"></div>
       </div>
     );
   }
@@ -123,11 +123,11 @@ function App() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">S</span>
+              <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">P</span>
               </div>
-              <span className="text-xl font-bold text-gray-900 hidden sm:inline">SKOOL Clone</span>
-              <span className="text-lg font-bold text-gray-900 sm:hidden">SKOOL</span>
+              <span className="text-xl font-bold text-gray-900 hidden sm:inline">Peptide Price</span>
+              <span className="text-lg font-bold text-gray-900 sm:hidden">PP</span>
             </div>
 
             {/* Desktop Navigation */}
@@ -140,7 +140,7 @@ function App() {
                     onClick={() => setCurrentView(item.id as View)}
                     className={`relative px-3 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
                       currentView === item.id
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-yellow-500 text-white'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >
@@ -200,7 +200,7 @@ function App() {
                           setNavDropdownOpen(false);
                         }}
                         className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors first:rounded-t-lg ${
-                          currentView === item.id ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                          currentView === item.id ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700'
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -251,11 +251,11 @@ function App() {
           <div className="text-center text-gray-600">
             <p className="mb-2">
               Welcome, <span className="font-semibold">{user.name}</span>! You have{' '}
-              <span className="font-bold text-blue-600">{user.points}</span> points and are{' '}
-              <span className="font-bold text-blue-600">Level {user.level}</span>
+              <span className="font-bold text-yellow-600">{user.points}</span> points and are{' '}
+              <span className="font-bold text-yellow-600">Level {user.level}</span>
             </p>
             <p className="text-sm text-gray-500">
-              Built with React, TypeScript, Tailwind CSS, and Supabase
+              Peptide Price Community - Your trusted peptide resource
             </p>
           </div>
         </div>

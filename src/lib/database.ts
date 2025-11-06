@@ -15,11 +15,11 @@ export async function initializeDatabase() {
 
     const adminPassword = 'admin123';
     const { data: adminAuth, error: adminError } = await supabase.auth.signUp({
-      email: 'admin@skool.com',
+      email: 'admin@peptideprice.com',
       password: adminPassword,
       options: {
         data: {
-          name: 'Admin User',
+          name: 'Peptide Price Admin',
         },
         emailRedirectTo: undefined,
       }
@@ -32,11 +32,11 @@ export async function initializeDatabase() {
     if (adminAuth.user) {
       const { error: insertError } = await supabase.from('users').insert({
         id: adminAuth.user.id,
-        email: 'admin@skool.com',
-        name: 'Admin User',
+        email: 'admin@peptideprice.com',
+        name: 'Peptide Price Admin',
         username: 'admin',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin',
-        bio: 'Platform administrator',
+        bio: 'Peptide Price community administrator - Here to help with all your peptide questions',
         role: 'admin',
         points: 500,
         level: 5,
@@ -45,7 +45,7 @@ export async function initializeDatabase() {
       if (insertError) {
         console.error('Admin profile insert error:', insertError);
       } else {
-        console.log('Admin account created: admin@skool.com / admin123');
+        console.log('Admin account created: admin@peptideprice.com / admin123');
       }
     }
 
@@ -87,7 +87,7 @@ export async function initializeDatabase() {
           name: user.name,
           username: user.username,
           avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`,
-          bio: 'Community member passionate about learning',
+          bio: 'Peptide enthusiast exploring optimal health and longevity',
           role: 'member',
           points: user.points,
           level: user.level,
@@ -106,28 +106,28 @@ export async function initializeDatabase() {
     const { data: allUsers } = await supabase.from('users').select('id');
     const userIdList = allUsers?.map(u => u.id) || [];
 
-    const categories = ['General', 'Announcements', 'Questions', 'Resources', 'Discussions'];
+    const categories = ['peptide-research', 'dosing-protocols', 'supplier-reviews', 'results', 'questions', 'general'];
     const postTitles = [
-      'Welcome to our community!',
-      'Tips for getting started with the platform',
-      'How to maximize your learning experience',
-      'Community guidelines and best practices',
-      'Introducing our new course on React',
-      'Weekly challenge: Build a todo app',
-      'Share your project showcase here!',
-      'Q&A: Ask me anything about web development',
-      'Resources for learning JavaScript',
-      'Success story: How I landed my first dev job',
-      'Debugging tips and tricks',
-      'Best practices for writing clean code',
-      'Understanding async/await in JavaScript',
-      'CSS Grid vs Flexbox: When to use which?',
-      'Database design fundamentals',
-      'API security best practices',
-      'Mobile-first design principles',
-      'Git workflow for teams',
-      'Testing strategies for React apps',
-      'Performance optimization techniques',
+      'Welcome to Peptide Price Community!',
+      'BPC-157: My 30-day healing protocol results',
+      'Best peptide suppliers - 2025 updated list',
+      'TB-500 dosing: What worked for me',
+      'GHK-Cu for anti-aging - Before and after',
+      'Comparing prices across top peptide vendors',
+      'Peptide reconstitution guide for beginners',
+      'CJC-1295/Ipamorelin stack experiences?',
+      'Quality testing: How to verify peptide purity',
+      'Thymosin Alpha-1 for immune support',
+      'Storage tips for maintaining peptide potency',
+      'PT-141 dosing protocols and experiences',
+      'Peptide cycling: When and why to take breaks',
+      'Melanotan II safety and dosing guide',
+      'NAD+ vs NMN: Which is better?',
+      'Peptide injection techniques - Step by step',
+      'Semax and Selank for cognitive enhancement',
+      'Post-cycle recovery protocols',
+      'Understanding peptide certificate of analysis',
+      'Combining peptides: Safe stacks and synergies',
     ];
 
     for (let i = 0; i < postTitles.length; i++) {
@@ -153,7 +153,7 @@ export async function initializeDatabase() {
           await supabase.from('comments').insert({
             post_id: post.id,
             user_id: commenterId,
-            content: `Great post! Here are my thoughts on this topic. I think this is really valuable for the community.`,
+            content: `Thanks for sharing! I've had similar experiences with peptides. This information is really valuable for the community.`,
           });
         }
       }
@@ -161,34 +161,34 @@ export async function initializeDatabase() {
 
     const courses = [
       {
-        title: 'Web Development Fundamentals',
-        description: 'Learn the basics of HTML, CSS, and JavaScript from scratch',
+        title: 'Peptide Fundamentals for Beginners',
+        description: 'Complete guide to getting started with peptides safely and effectively',
         lessons: [
-          { title: 'Introduction to HTML', content: 'Learn HTML basics and structure', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-          { title: 'CSS Styling', content: 'Master CSS styling and layouts', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-          { title: 'JavaScript Basics', content: 'JavaScript fundamentals and syntax', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-          { title: 'DOM Manipulation', content: 'Working with the DOM and events', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'Introduction to Peptides', content: 'Learn what peptides are, how they work, and their benefits for health and longevity', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'Reconstitution & Storage', content: 'Master proper peptide reconstitution techniques and optimal storage conditions', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'Injection Techniques', content: 'Safe and effective subcutaneous and intramuscular injection methods', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'Dosing & Safety', content: 'Understanding proper dosing protocols, cycling, and safety considerations', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
         ],
       },
       {
-        title: 'React Masterclass',
-        description: 'Build modern web applications with React',
+        title: 'Healing Peptides: BPC-157 & TB-500',
+        description: 'Comprehensive guide to the most popular healing and recovery peptides',
         lessons: [
-          { title: 'React Components', content: 'Understanding components and props', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-          { title: 'State Management', content: 'Managing state in React applications', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-          { title: 'React Hooks', content: 'Using hooks effectively in your apps', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-          { title: 'Building a Project', content: 'Complete project walkthrough', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'BPC-157 Overview', content: 'Understanding BPC-157 mechanism of action and benefits for injury healing', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'TB-500 Deep Dive', content: 'TB-500 for tissue repair, inflammation reduction, and recovery', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'Optimal Dosing Protocols', content: 'Evidence-based dosing strategies for maximum healing benefits', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'Combining BPC-157 & TB-500', content: 'Synergistic stacking for enhanced recovery and healing', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
         ],
       },
       {
-        title: 'Backend Development with Node.js',
-        description: 'Create powerful server-side applications',
+        title: 'Growth Hormone Peptides & Anti-Aging',
+        description: 'Master GH-releasing peptides for longevity and body composition',
         lessons: [
-          { title: 'Node.js Basics', content: 'Getting started with Node.js', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-          { title: 'Express Framework', content: 'Building APIs with Express', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-          { title: 'Database Integration', content: 'Working with databases in Node', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-          { title: 'Authentication', content: 'Implementing secure authentication', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-          { title: 'Deployment', content: 'Deploying your Node.js applications', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'GH Peptide Basics', content: 'Introduction to CJC-1295, Ipamorelin, and other GH secretagogues', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'CJC-1295 & Ipamorelin Stack', content: 'The most popular GH peptide combination for fat loss and muscle gain', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'GHK-Cu for Anti-Aging', content: 'Copper peptides for skin, hair, and overall rejuvenation', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'Thymosin Alpha-1', content: 'Immune system optimization and longevity benefits', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+          { title: 'Long-Term Protocols', content: 'Creating sustainable peptide protocols for lasting anti-aging benefits', video: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
         ],
       },
     ];
@@ -222,11 +222,11 @@ export async function initializeDatabase() {
     }
 
     const events = [
-      { title: 'Weekly Community Meetup', description: 'Join us for our weekly video call to connect and share', date: '2025-10-15', time: '18:00' },
-      { title: 'React Workshop', description: 'Hands-on React coding session for beginners', date: '2025-10-20', time: '14:00' },
-      { title: 'Career Q&A Session', description: 'Ask questions about tech careers and get advice', date: '2025-10-22', time: '16:00' },
-      { title: 'Project Demo Day', description: 'Share your projects with the community', date: '2025-10-25', time: '17:00' },
-      { title: 'Guest Speaker: Senior Developer', description: 'Industry insights from an experienced developer', date: '2025-11-01', time: '19:00' },
+      { title: 'Weekly Peptide Q&A Session', description: 'Join us for live Q&A about peptides, dosing, and experiences', date: '2025-11-15', time: '18:00' },
+      { title: 'BPC-157 Protocol Workshop', description: 'Deep dive into BPC-157 usage for injury healing and recovery', date: '2025-11-20', time: '14:00' },
+      { title: 'Supplier Review Discussion', description: 'Community discussion on peptide supplier experiences and recommendations', date: '2025-11-22', time: '16:00' },
+      { title: 'Member Results Showcase', description: 'Share your peptide journey results and experiences', date: '2025-11-25', time: '17:00' },
+      { title: 'Guest Expert: Peptide Researcher', description: 'Special guest lecture on the latest peptide research and developments', date: '2025-12-01', time: '19:00' },
     ];
 
     for (const event of events) {

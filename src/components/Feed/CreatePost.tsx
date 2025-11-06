@@ -151,13 +151,14 @@ export function CreatePost({ currentUser, onClose }: CreatePostProps) {
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
             >
               <option value="general">General</option>
-              <option value="announcements">Announcements</option>
+              <option value="peptide-research">Peptide Research</option>
+              <option value="dosing-protocols">Dosing Protocols</option>
+              <option value="supplier-reviews">Supplier Reviews</option>
+              <option value="results">Results</option>
               <option value="questions">Questions</option>
-              <option value="resources">Resources</option>
-              <option value="discussions">Discussions</option>
             </select>
           </div>
 
@@ -171,8 +172,8 @@ export function CreatePost({ currentUser, onClose }: CreatePostProps) {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="What's on your mind?"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              placeholder="Share peptide insights..."
             />
           </div>
 
@@ -186,8 +187,8 @@ export function CreatePost({ currentUser, onClose }: CreatePostProps) {
               onChange={(e) => setContent(e.target.value)}
               required
               rows={8}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Share your thoughts with the community..."
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              placeholder="Share your peptide experiences, research, or questions..."
             />
           </div>
 
@@ -198,7 +199,7 @@ export function CreatePost({ currentUser, onClose }: CreatePostProps) {
                 Images (Optional - Up to 5)
               </div>
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-yellow-500 transition-colors">
               <input
                 type="file"
                 id="imageUpload"
@@ -247,7 +248,7 @@ export function CreatePost({ currentUser, onClose }: CreatePostProps) {
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
-                    className="bg-blue-600 h-2 rounded-full transition-all"
+                    className="bg-yellow-500 h-2 rounded-full transition-all"
                     style={{ width: `${uploadProgress}%` }}
                   />
                 </div>
@@ -267,7 +268,7 @@ export function CreatePost({ currentUser, onClose }: CreatePostProps) {
               type="text"
               value={videoUrl}
               onChange={(e) => setVideoUrl(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="https://www.youtube.com/watch?v=..."
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -279,7 +280,7 @@ export function CreatePost({ currentUser, onClose }: CreatePostProps) {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50"
+              className="flex-1 bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors disabled:opacity-50"
             >
               {loading ? 'Creating...' : 'Create Post (+5 points)'}
             </button>
