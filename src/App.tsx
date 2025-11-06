@@ -148,7 +148,7 @@ function App() {
               onClick={() => setCurrentView('feed')}
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
-              <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg md:text-xl">P</span>
               </div>
               <span className="text-lg md:text-xl font-bold text-gray-900">Peptide Price</span>
