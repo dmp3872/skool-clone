@@ -118,11 +118,12 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
-      {/* Mobile/Desktop Header */}
+    <div className="min-h-screen bg-gray-50 pb-16 md:pb-0">
+      {/* Header */}
       <nav className="bg-white border-b sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-14 md:h-16">
+            {/* Logo/Brand */}
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg md:text-xl">P</span>
@@ -130,7 +131,7 @@ function App() {
               <span className="text-lg md:text-xl font-bold text-gray-900">Peptide Price</span>
             </div>
 
-            {/* Desktop Navigation - Hidden on Mobile */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-2">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -164,13 +165,16 @@ function App() {
               </button>
             </div>
 
-            {/* Mobile - Profile/Settings Icon Only */}
+            {/* Mobile - Notifications Bell */}
             <div className="md:hidden">
               <button
-                onClick={() => setCurrentView('profile')}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                onClick={() => setCurrentView('notifications')}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors relative"
               >
-                <UserIcon size={20} className="text-gray-700" />
+                <Bell size={20} className="text-gray-700" />
+                {unreadNotifications > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                )}
               </button>
             </div>
           </div>
@@ -188,103 +192,162 @@ function App() {
         {currentView === 'admin' && <AdminDashboard currentUser={user} />}
       </main>
 
-      {/* Mobile Bottom Navigation - App Style */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t z-50 safe-area-bottom">
-        <div className="flex items-center justify-around h-16 px-2">
-          {navItems.slice(0, 5).map((item) => {
-            const Icon = item.icon;
-            const isActive = currentView === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setCurrentView(item.id as View)}
-                className="flex flex-col items-center justify-center flex-1 h-full relative active-press touch-target no-select"
-              >
-                <div className="relative">
-                  <Icon
-                    size={24}
-                    className={`transition-colors ${
-                      isActive ? 'text-yellow-500' : 'text-gray-500'
-                    }`}
-                    strokeWidth={isActive ? 2.5 : 2}
-                  />
-                  {item.badge && item.badge > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center" style={{ fontSize: '9px' }}>
-                      {item.badge > 9 ? '9+' : item.badge}
-                    </span>
-                  )}
-                </div>
-                <span className={`text-xs mt-1 font-medium ${
-                  isActive ? 'text-yellow-600' : 'text-gray-500'
-                }`}>
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
-
-          {/* More menu button */}
+      {/* Mobile Bottom Navigation - Skool Style */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t z-50">
+        <div className="flex items-center justify-around px-1" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+          {/* Community/Feed */}
           <button
-            onClick={() => setNavDropdownOpen(!navDropdownOpen)}
-            className="flex flex-col items-center justify-center flex-1 h-full relative active-press touch-target no-select"
+            onClick={() => setCurrentView('feed')}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
+              currentView === 'feed' ? 'text-yellow-600' : 'text-gray-600'
+            }`}
           >
-            <div className="relative">
-              <Shield
-                size={24}
-                className={`transition-colors ${
-                  navDropdownOpen || currentView === 'admin' ? 'text-yellow-500' : 'text-gray-500'
-                }`}
-              />
-            </div>
-            <span className={`text-xs mt-1 font-medium ${
-              navDropdownOpen || currentView === 'admin' ? 'text-yellow-600' : 'text-gray-500'
-            }`}>
-              More
-            </span>
+            <Home size={24} strokeWidth={currentView === 'feed' ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">Community</span>
           </button>
 
-          {/* Mobile More Menu Dropdown */}
+          {/* Courses */}
+          <button
+            onClick={() => setCurrentView('courses')}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
+              currentView === 'courses' ? 'text-yellow-600' : 'text-gray-600'
+            }`}
+          >
+            <BookOpen size={24} strokeWidth={currentView === 'courses' ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">Classroom</span>
+          </button>
+
+          {/* Calendar */}
+          <button
+            onClick={() => setCurrentView('events')}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
+              currentView === 'events' ? 'text-yellow-600' : 'text-gray-600'
+            }`}
+          >
+            <Calendar size={24} strokeWidth={currentView === 'events' ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">Calendar</span>
+          </button>
+
+          {/* Leaderboard */}
+          <button
+            onClick={() => setCurrentView('leaderboard')}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
+              currentView === 'leaderboard' ? 'text-yellow-600' : 'text-gray-600'
+            }`}
+          >
+            <Trophy size={24} strokeWidth={currentView === 'leaderboard' ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">Leaderboard</span>
+          </button>
+
+          {/* More/Menu */}
+          <button
+            onClick={() => setNavDropdownOpen(!navDropdownOpen)}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 relative ${
+              navDropdownOpen || ['members', 'profile', 'admin'].includes(currentView) ? 'text-yellow-600' : 'text-gray-600'
+            }`}
+          >
+            <UserIcon size={24} strokeWidth={navDropdownOpen || ['members', 'profile', 'admin'].includes(currentView) ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">More</span>
+            {unreadNotifications > 0 && (
+              <span className="absolute top-1 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+            )}
+          </button>
+
+          {/* More Menu Dropdown */}
           {navDropdownOpen && (
-            <div className="absolute bottom-full right-2 mb-2 w-56 bg-white border rounded-lg shadow-lg">
-              {navItems.slice(5).map((item) => {
-                const Icon = item.icon;
-                return (
+            <>
+              {/* Backdrop */}
+              <div
+                className="fixed inset-0 bg-black bg-opacity-30 z-40"
+                onClick={() => setNavDropdownOpen(false)}
+              ></div>
+
+              {/* Menu */}
+              <div className="absolute bottom-full left-0 right-0 mb-0 bg-white border-t shadow-2xl z-50 max-h-[60vh] overflow-y-auto">
+                {/* Profile/Settings Section */}
+                <button
+                  onClick={() => {
+                    setCurrentView('profile');
+                    setNavDropdownOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-4 px-4 py-4 border-b ${
+                    currentView === 'profile' ? 'bg-yellow-50' : 'hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold">
+                    {user.name.charAt(0)}
+                  </div>
+                  <div className="flex-1 text-left">
+                    <div className="font-semibold text-gray-900">{user.name}</div>
+                    <div className="text-sm text-gray-500">View Profile</div>
+                  </div>
+                  <ChevronDown size={20} className="text-gray-400 -rotate-90" />
+                </button>
+
+                {/* Members */}
+                <button
+                  onClick={() => {
+                    setCurrentView('members');
+                    setNavDropdownOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 ${
+                    currentView === 'members' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <Users size={20} />
+                  <span className="font-medium">Members</span>
+                </button>
+
+                {/* Notifications */}
+                <button
+                  onClick={() => {
+                    setCurrentView('notifications');
+                    setNavDropdownOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-4 py-3 ${
+                    currentView === 'notifications' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <Bell size={20} />
+                    <span className="font-medium">Notifications</span>
+                  </div>
+                  {unreadNotifications > 0 && (
+                    <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5">
+                      {unreadNotifications > 9 ? '9+' : unreadNotifications}
+                    </span>
+                  )}
+                </button>
+
+                {/* Admin (if applicable) */}
+                {(user.role === 'admin' || user.role === 'moderator') && (
                   <button
-                    key={item.id}
                     onClick={() => {
-                      setCurrentView(item.id as View);
+                      setCurrentView('admin');
                       setNavDropdownOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors first:rounded-t-lg ${
-                      currentView === item.id ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700'
+                    className={`w-full flex items-center gap-3 px-4 py-3 ${
+                      currentView === 'admin' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
-                    <div className="flex items-center gap-3">
-                      <Icon size={18} />
-                      <span className="font-medium">{item.label}</span>
-                    </div>
-                    {item.badge && item.badge > 0 && (
-                      <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">
-                        {item.badge > 9 ? '9+' : item.badge}
-                      </span>
-                    )}
+                    <Shield size={20} />
+                    <span className="font-medium">Admin</span>
                   </button>
-                );
-              })}
+                )}
 
-              <div className="border-t">
+                {/* Logout */}
                 <button
                   onClick={() => {
                     handleLogout();
                     setNavDropdownOpen(false);
                   }}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors rounded-b-lg"
+                  className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 border-t"
                 >
-                  <LogOut size={18} />
+                  <LogOut size={20} />
                   <span className="font-medium">Logout</span>
                 </button>
               </div>
-            </div>
+            </>
           )}
         </div>
       </nav>

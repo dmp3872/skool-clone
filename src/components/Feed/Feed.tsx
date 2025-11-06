@@ -164,31 +164,45 @@ export function Feed({ currentUser }: FeedProps) {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 mb-4 md:mb-6">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Community Feed</h2>
+      {/* Create Post Button - Mobile Sticky */}
+      <div className="md:hidden sticky top-14 z-40 -mx-4 px-4 py-3 bg-gray-50 border-b border-gray-200 mb-3">
         <button
           onClick={() => setShowCreatePost(true)}
-          className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors active-press touch-target"
+          className="w-full bg-yellow-500 text-white py-2.5 rounded-lg font-semibold active:bg-yellow-600 transition-colors shadow-sm"
+        >
+          + Create Post
+        </button>
+      </div>
+
+      {/* Create Post - Desktop */}
+      <div className="hidden md:block bg-white rounded-lg shadow-sm p-6 mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Community Feed</h2>
+        <button
+          onClick={() => setShowCreatePost(true)}
+          className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
         >
           Create New Post
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm p-3 md:p-4 mb-4 md:mb-6">
-        <div className="flex gap-2 flex-wrap">
-          {['all', 'peptide-research', 'dosing-protocols', 'supplier-reviews', 'results', 'questions', 'general'].map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setFilterCategory(cat)}
-              className={`px-3 md:px-4 py-2 rounded-lg font-medium transition-colors text-sm md:text-base active-press touch-target ${
-                filterCategory === cat
-                  ? 'bg-yellow-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
-            </button>
-          ))}
+      {/* Category Filter - Horizontal Scroll on Mobile */}
+      <div className="mb-3 md:mb-6 -mx-4 px-4 md:mx-0 md:px-0">
+        <div className="md:bg-white md:rounded-lg md:shadow-sm md:p-4">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 md:pb-0 md:flex-wrap">
+            {['all', 'peptide-research', 'dosing-protocols', 'supplier-reviews', 'results', 'questions', 'general'].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilterCategory(cat)}
+                className={`px-3 py-1.5 rounded-full font-medium transition-colors text-sm whitespace-nowrap flex-shrink-0 ${
+                  filterCategory === cat
+                    ? 'bg-yellow-500 text-white shadow-sm'
+                    : 'bg-white md:bg-gray-100 text-gray-700 border md:border-0'
+                }`}
+              >
+                {cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -199,18 +213,18 @@ export function Feed({ currentUser }: FeedProps) {
           <p className="text-gray-600 mb-4 md:mb-6">Be the first to start a conversation!</p>
           <button
             onClick={() => setShowCreatePost(true)}
-            className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 active-press"
+            className="bg-yellow-500 text-white px-6 py-2 rounded-lg active:bg-yellow-600"
           >
             Create First Post
           </button>
         </div>
       ) : (
-        <div className="space-y-3 md:space-y-4">
+        <div className="space-y-0 md:space-y-4">
           {filteredPosts.map((post) => (
             <div
               key={post.id}
               onClick={() => setSelectedPost(post)}
-              className="bg-white rounded-lg shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow cursor-pointer active:scale-[0.99] transition-transform"
+              className="bg-white md:rounded-lg md:shadow-sm p-4 md:p-6 border-b md:border-b-0 last:border-b-0 hover:bg-gray-50 md:hover:shadow-md transition-all cursor-pointer active:bg-gray-100"
             >
               {post.is_pinned && (
                 <div className="flex items-center gap-2 text-yellow-600 mb-3">
@@ -219,19 +233,19 @@ export function Feed({ currentUser }: FeedProps) {
                 </div>
               )}
 
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3">
                 <img
                   src={post.users.avatar}
                   alt={post.users.name}
-                  className="w-12 h-12 rounded-full"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-full flex-shrink-0"
                 />
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-gray-900">{post.users.name}</h3>
-                      <span className="text-gray-500 text-sm">@{post.users.username}</span>
-                      <span className="text-gray-400 text-sm">
-                        {new Date(post.created_at).toLocaleDateString()}
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <h3 className="font-semibold text-gray-900 text-sm md:text-base truncate">{post.users.name}</h3>
+                      <span className="text-gray-500 text-xs md:text-sm">·</span>
+                      <span className="text-gray-400 text-xs md:text-sm">
+                        {new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                       </span>
                     </div>
 
@@ -261,12 +275,12 @@ export function Feed({ currentUser }: FeedProps) {
                     )}
                   </div>
 
-                  <span className="inline-block px-3 py-1 bg-yellow-50 text-yellow-700 text-xs font-medium rounded-full mb-3">
-                    {post.category}
+                  <span className="inline-block px-2 py-0.5 bg-yellow-50 text-yellow-700 text-[10px] md:text-xs font-medium rounded mb-2">
+                    {post.category.replace('-', ' ')}
                   </span>
 
-                  <h2 className="text-xl font-bold text-gray-900 mb-2">{post.title}</h2>
-                  <p className="text-gray-600 mb-4 line-clamp-2">{post.content}</p>
+                  <h2 className="text-base md:text-xl font-bold text-gray-900 mb-1 md:mb-2 line-clamp-2">{post.title}</h2>
+                  <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4 line-clamp-2">{post.content}</p>
 
                   {post.image_urls && post.image_urls.length > 0 && (
                     <div className="mb-4">
@@ -313,20 +327,20 @@ export function Feed({ currentUser }: FeedProps) {
                     </div>
                   )}
 
-                  <div className="flex items-center gap-6 text-gray-500">
+                  <div className="flex items-center gap-4 md:gap-6 text-gray-500 text-sm">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleLike(post.id);
                       }}
-                      className="flex items-center gap-2 hover:text-yellow-600 transition-colors"
+                      className="flex items-center gap-1.5 hover:text-yellow-600 transition-colors"
                     >
-                      <ThumbsUp size={18} />
-                      <span>{post.likes_count}</span>
+                      <ThumbsUp size={16} className="md:w-[18px] md:h-[18px]" />
+                      <span className="text-xs md:text-sm">{post.likes_count}</span>
                     </button>
-                    <div className="flex items-center gap-2">
-                      <MessageSquare size={18} />
-                      <span>{post.comments_count}</span>
+                    <div className="flex items-center gap-1.5">
+                      <MessageSquare size={16} className="md:w-[18px] md:h-[18px]" />
+                      <span className="text-xs md:text-sm">{post.comments_count}</span>
                     </div>
                   </div>
                 </div>
