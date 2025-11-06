@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { User } from '../../lib/auth';
-import { MessageSquare, ThumbsUp, Pin } from 'lucide-react';
+import { MessageSquare, ThumbsUp, Pin, Trash2, PinOff } from 'lucide-react';
 import { PostDetail } from './PostDetail';
 import { CreatePost } from './CreatePost';
 
@@ -93,6 +93,33 @@ export function Feed({ currentUser }: FeedProps) {
       loadPosts();
     } catch (error) {
       console.error('Error toggling like:', error);
+    }
+  }
+
+  async function handleDeletePost(postId: string) {
+    if (!confirm('Are you sure you want to delete this post?')) return;
+
+    try {
+      await supabase.from('post_likes').delete().eq('post_id', postId);
+      await supabase.from('comments').delete().eq('post_id', postId);
+      await supabase.from('posts').delete().eq('id', postId);
+      loadPosts();
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      alert('Failed to delete post');
+    }
+  }
+
+  async function handleTogglePin(postId: string, currentPinned: boolean) {
+    try {
+      await supabase
+        .from('posts')
+        .update({ is_pinned: !currentPinned })
+        .eq('id', postId);
+      loadPosts();
+    } catch (error) {
+      console.error('Error toggling pin:', error);
+      alert('Failed to update pin status');
     }
   }
 
@@ -197,12 +224,39 @@ export function Feed({ currentUser }: FeedProps) {
                   className="w-12 h-12 rounded-full"
                 />
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-semibold text-gray-900">{post.users.name}</h3>
-                    <span className="text-gray-500 text-sm">@{post.users.username}</span>
-                    <span className="text-gray-400 text-sm">
-                      {new Date(post.created_at).toLocaleDateString()}
-                    </span>
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold text-gray-900">{post.users.name}</h3>
+                      <span className="text-gray-500 text-sm">@{post.users.username}</span>
+                      <span className="text-gray-400 text-sm">
+                        {new Date(post.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+
+                    {(currentUser.role === 'admin' || currentUser.role === 'moderator') && (
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleTogglePin(post.id, post.is_pinned);
+                          }}
+                          className="p-1.5 text-gray-500 hover:text-yellow-600 hover:bg-yellow-50 rounded transition-colors"
+                          title={post.is_pinned ? 'Unpin post' : 'Pin post'}
+                        >
+                          {post.is_pinned ? <PinOff size={16} /> : <Pin size={16} />}
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeletePost(post.id);
+                          }}
+                          className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                          title="Delete post"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   <span className="inline-block px-3 py-1 bg-yellow-50 text-yellow-700 text-xs font-medium rounded-full mb-3">
