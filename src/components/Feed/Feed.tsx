@@ -164,23 +164,23 @@ export function Feed({ currentUser }: FeedProps) {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Community Feed</h2>
+      <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 mb-4 md:mb-6">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Community Feed</h2>
         <button
           onClick={() => setShowCreatePost(true)}
-          className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+          className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors active-press touch-target"
         >
           Create New Post
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
+      <div className="bg-white rounded-lg shadow-sm p-3 md:p-4 mb-4 md:mb-6">
         <div className="flex gap-2 flex-wrap">
           {['all', 'peptide-research', 'dosing-protocols', 'supplier-reviews', 'results', 'questions', 'general'].map((cat) => (
             <button
               key={cat}
               onClick={() => setFilterCategory(cat)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              className={`px-3 md:px-4 py-2 rounded-lg font-medium transition-colors text-sm md:text-base active-press touch-target ${
                 filterCategory === cat
                   ? 'bg-yellow-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -193,24 +193,24 @@ export function Feed({ currentUser }: FeedProps) {
       </div>
 
       {filteredPosts.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm p-12 text-center">
-          <div className="text-6xl mb-4">📝</div>
-          <h3 className="text-xl font-semibold mb-2">No posts yet</h3>
-          <p className="text-gray-600 mb-6">Be the first to start a conversation!</p>
+        <div className="bg-white rounded-lg shadow-sm p-8 md:p-12 text-center">
+          <div className="text-5xl md:text-6xl mb-4">📝</div>
+          <h3 className="text-lg md:text-xl font-semibold mb-2">No posts yet</h3>
+          <p className="text-gray-600 mb-4 md:mb-6">Be the first to start a conversation!</p>
           <button
             onClick={() => setShowCreatePost(true)}
-            className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600"
+            className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 active-press"
           >
             Create First Post
           </button>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4">
           {filteredPosts.map((post) => (
             <div
               key={post.id}
               onClick={() => setSelectedPost(post)}
-              className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer"
+              className="bg-white rounded-lg shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow cursor-pointer active:scale-[0.99] transition-transform"
             >
               {post.is_pinned && (
                 <div className="flex items-center gap-2 text-yellow-600 mb-3">

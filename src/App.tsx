@@ -118,19 +118,19 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
+      {/* Mobile/Desktop Header */}
       <nav className="bg-white border-b sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14 md:h-16">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">P</span>
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg md:text-xl">P</span>
               </div>
-              <span className="text-xl font-bold text-gray-900 hidden sm:inline">Peptide Price</span>
-              <span className="text-lg font-bold text-gray-900 sm:hidden">PP</span>
+              <span className="text-lg md:text-xl font-bold text-gray-900">Peptide Price</span>
             </div>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - Hidden on Mobile */}
             <div className="hidden md:flex items-center gap-2">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -164,78 +164,20 @@ function App() {
               </button>
             </div>
 
-            {/* Mobile Dropdown */}
-            <div className="md:hidden relative">
+            {/* Mobile - Profile/Settings Icon Only */}
+            <div className="md:hidden">
               <button
-                onClick={() => setNavDropdownOpen(!navDropdownOpen)}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg font-medium text-gray-900"
+                onClick={() => setCurrentView('profile')}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
-                {(() => {
-                  const activeItem = navItems.find(item => item.id === currentView);
-                  const Icon = activeItem?.icon;
-                  return (
-                    <>
-                      {Icon && <Icon size={18} />}
-                      <span className="hidden sm:inline">{activeItem?.label}</span>
-                      {activeItem?.badge && activeItem.badge > 0 && (
-                        <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5 ml-1">
-                          {activeItem.badge > 9 ? '9+' : activeItem.badge}
-                        </span>
-                      )}
-                    </>
-                  );
-                })()}
-                <ChevronDown size={16} className={`transition-transform ${navDropdownOpen ? 'rotate-180' : ''}`} />
+                <UserIcon size={20} className="text-gray-700" />
               </button>
-
-              {navDropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 w-56 bg-white border rounded-lg shadow-lg z-50">
-                  {navItems.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          setCurrentView(item.id as View);
-                          setNavDropdownOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors first:rounded-t-lg ${
-                          currentView === item.id ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700'
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <Icon size={18} />
-                          <span className="font-medium">{item.label}</span>
-                        </div>
-                        {item.badge && item.badge > 0 && (
-                          <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">
-                            {item.badge > 9 ? '9+' : item.badge}
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-
-                  <div className="border-t">
-                    <button
-                      onClick={() => {
-                        handleLogout();
-                        setNavDropdownOpen(false);
-                      }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors rounded-b-lg"
-                    >
-                      <LogOut size={18} />
-                      <span className="font-medium">Logout</span>
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-4 py-4 md:py-8">
         {currentView === 'feed' && <Feed currentUser={user} />}
         {currentView === 'courses' && <Courses currentUser={user} />}
         {currentView === 'leaderboard' && <Leaderboard currentUser={user} />}
@@ -246,7 +188,109 @@ function App() {
         {currentView === 'admin' && <AdminDashboard currentUser={user} />}
       </main>
 
-      <footer className="bg-white border-t mt-12">
+      {/* Mobile Bottom Navigation - App Style */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t z-50 safe-area-bottom">
+        <div className="flex items-center justify-around h-16 px-2">
+          {navItems.slice(0, 5).map((item) => {
+            const Icon = item.icon;
+            const isActive = currentView === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setCurrentView(item.id as View)}
+                className="flex flex-col items-center justify-center flex-1 h-full relative active-press touch-target no-select"
+              >
+                <div className="relative">
+                  <Icon
+                    size={24}
+                    className={`transition-colors ${
+                      isActive ? 'text-yellow-500' : 'text-gray-500'
+                    }`}
+                    strokeWidth={isActive ? 2.5 : 2}
+                  />
+                  {item.badge && item.badge > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center" style={{ fontSize: '9px' }}>
+                      {item.badge > 9 ? '9+' : item.badge}
+                    </span>
+                  )}
+                </div>
+                <span className={`text-xs mt-1 font-medium ${
+                  isActive ? 'text-yellow-600' : 'text-gray-500'
+                }`}>
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
+
+          {/* More menu button */}
+          <button
+            onClick={() => setNavDropdownOpen(!navDropdownOpen)}
+            className="flex flex-col items-center justify-center flex-1 h-full relative active-press touch-target no-select"
+          >
+            <div className="relative">
+              <Shield
+                size={24}
+                className={`transition-colors ${
+                  navDropdownOpen || currentView === 'admin' ? 'text-yellow-500' : 'text-gray-500'
+                }`}
+              />
+            </div>
+            <span className={`text-xs mt-1 font-medium ${
+              navDropdownOpen || currentView === 'admin' ? 'text-yellow-600' : 'text-gray-500'
+            }`}>
+              More
+            </span>
+          </button>
+
+          {/* Mobile More Menu Dropdown */}
+          {navDropdownOpen && (
+            <div className="absolute bottom-full right-2 mb-2 w-56 bg-white border rounded-lg shadow-lg">
+              {navItems.slice(5).map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setCurrentView(item.id as View);
+                      setNavDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors first:rounded-t-lg ${
+                      currentView === item.id ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon size={18} />
+                      <span className="font-medium">{item.label}</span>
+                    </div>
+                    {item.badge && item.badge > 0 && (
+                      <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">
+                        {item.badge > 9 ? '9+' : item.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+
+              <div className="border-t">
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setNavDropdownOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors rounded-b-lg"
+                >
+                  <LogOut size={18} />
+                  <span className="font-medium">Logout</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </nav>
+
+      {/* Desktop Footer */}
+      <footer className="hidden md:block bg-white border-t mt-12">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="text-center text-gray-600">
             <p className="mb-2">
