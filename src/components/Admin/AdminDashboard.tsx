@@ -6,13 +6,14 @@ import { InviteManagement } from './InviteManagement';
 import { UserManagement } from './UserManagement';
 import { MemberApproval } from './MemberApproval';
 import { EmailExport } from './EmailExport';
-import { BookOpen, MessageSquare, Link as LinkIcon, Users, Shield, UserCheck, Mail } from 'lucide-react';
+import { BannedEmails } from './BannedEmails';
+import { BookOpen, MessageSquare, Link as LinkIcon, Users, Shield, UserCheck, Mail, Ban } from 'lucide-react';
 
 interface AdminDashboardProps {
   currentUser: User;
 }
 
-type AdminView = 'approvals' | 'users' | 'emails' | 'courses' | 'posts' | 'invites';
+type AdminView = 'approvals' | 'users' | 'banned' | 'emails' | 'courses' | 'posts' | 'invites';
 
 export function AdminDashboard({ currentUser }: AdminDashboardProps) {
   const [activeView, setActiveView] = useState<AdminView>('approvals');
@@ -32,6 +33,7 @@ export function AdminDashboard({ currentUser }: AdminDashboardProps) {
   const adminViews = [
     { id: 'approvals', label: 'Approvals', icon: UserCheck },
     { id: 'users', label: 'Users', icon: Users },
+    { id: 'banned', label: 'Banned', icon: Ban },
     { id: 'emails', label: 'Emails', icon: Mail },
     { id: 'courses', label: 'Courses', icon: BookOpen },
     { id: 'posts', label: 'Posts', icon: MessageSquare },
@@ -79,6 +81,7 @@ export function AdminDashboard({ currentUser }: AdminDashboardProps) {
       <div>
         {activeView === 'approvals' && <MemberApproval currentUser={currentUser} />}
         {activeView === 'users' && <UserManagement currentUser={currentUser} />}
+        {activeView === 'banned' && <BannedEmails currentUser={currentUser} />}
         {activeView === 'emails' && <EmailExport currentUser={currentUser} />}
         {activeView === 'courses' && <CourseManagement currentUser={currentUser} />}
         {activeView === 'posts' && <PostModeration currentUser={currentUser} />}

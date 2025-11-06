@@ -25,6 +25,22 @@ export async function registerUser(email: string, password: string, name: string
       throw new Error('Password must be at least 6 characters');
     }
 
+    // Check if email is permanently banned
+    const { data: bannedEmail, error: banCheckError } = await supabase
+      .from('banned_emails')
+      .select('email, reason')
+      .eq('email', email.toLowerCase())
+      .maybeSingle();
+
+    if (banCheckError && banCheckError.code !== 'PGRST116') {
+      // PGRST116 is "not found" which is fine
+      console.error('Error checking banned emails:', banCheckError);
+    }
+
+    if (bannedEmail) {
+      throw new Error('This email address has been permanently banned from registration. Please contact an administrator if you believe this is an error.');
+    }
+
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,

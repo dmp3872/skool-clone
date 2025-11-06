@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { User } from '../../lib/auth';
-import { Search, Ban, ShieldCheck, Shield, CheckCircle } from 'lucide-react';
+import { Search, Ban, ShieldCheck, Shield, CheckCircle, UserX } from 'lucide-react';
 
 interface ManagedUser {
   id: string;
@@ -94,24 +94,78 @@ export function UserManagement({ currentUser }: UserManagementProps) {
     }
   }
 
-  async function handleBanUser(userId: string) {
-    const reason = prompt('Enter ban reason:');
+  async function handleKickUser(userId: string, userEmail: string, userName: string) {
+    if (!confirm(`Kick ${userName}? They will be removed from the platform but can re-register with the same email.`)) return;
+
+    try {
+      // Delete user account (they can re-register)
+      const { error: deleteError } = await supabase
+        .from('users')
+        .delete()
+        .eq('id', userId);
+
+      if (deleteError) {
+        console.error('Error kicking user:', deleteError);
+        alert(`Failed to kick user: ${deleteError.message}`);
+        return;
+      }
+
+      alert(`${userName} has been kicked. They can re-register if they wish.`);
+      loadUsers();
+      loadBans();
+    } catch (error) {
+      console.error('Error kicking user:', error);
+      alert('Failed to kick user');
+    }
+  }
+
+  async function handleBanUser(userId: string, userEmail: string, userName: string) {
+    const reason = prompt(`PERMANENTLY BAN ${userName}?\n\nThis will:\n1. Delete their account\n2. Block their email forever\n3. Prevent future registrations\n\nEnter ban reason:`);
     if (!reason) return;
 
     try {
-      const { error } = await supabase.from('user_bans').insert({
+      // First, add email to permanent ban list
+      const { error: banEmailError } = await supabase
+        .from('banned_emails')
+        .insert({
+          email: userEmail.toLowerCase(),
+          banned_by: currentUser.id,
+          reason,
+        });
+
+      if (banEmailError) {
+        // Check if email is already banned
+        if (banEmailError.code === '23505') {
+          alert('This email is already permanently banned.');
+        } else {
+          console.error('Error banning email:', banEmailError);
+          alert(`Failed to ban email: ${banEmailError.message}`);
+          return;
+        }
+      }
+
+      // Add to user_bans table (for tracking)
+      await supabase.from('user_bans').insert({
         user_id: userId,
         banned_by: currentUser.id,
         reason,
         active: true,
       });
 
-      if (error) {
-        console.error('Error banning user:', error);
-        alert(`Failed to ban user: ${error.message}`);
+      // Delete user account
+      const { error: deleteError } = await supabase
+        .from('users')
+        .delete()
+        .eq('id', userId);
+
+      if (deleteError) {
+        console.error('Error deleting banned user:', deleteError);
+        alert(`Email banned but failed to delete user: ${deleteError.message}`);
         return;
       }
 
+      alert(`${userName} has been permanently banned. Their email (${userEmail}) is blocked from future registrations.`);
+      loadUsers();
       loadBans();
     } catch (error) {
       console.error('Error banning user:', error);
@@ -326,11 +380,18 @@ export function UserManagement({ currentUser }: UserManagementProps) {
                             </button>
                           </div>
                           <button
-                            onClick={() => handleBanUser(user.id)}
+                            onClick={() => handleKickUser(user.id, user.email, user.name)}
+                            className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors flex items-center gap-2"
+                          >
+                            <UserX size={16} />
+                            Kick Member
+                          </button>
+                          <button
+                            onClick={() => handleBanUser(user.id, user.email, user.name)}
                             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
                           >
                             <Ban size={16} />
-                            Ban User
+                            Ban Forever
                           </button>
                         </>
                       ) : (
