@@ -23,6 +23,7 @@ import {
   LogOut,
   Shield,
   ChevronDown,
+  MoreVertical,
 } from 'lucide-react';
 
 type View = 'feed' | 'courses' | 'leaderboard' | 'events' | 'profile' | 'members' | 'notifications' | 'admin';
@@ -123,13 +124,16 @@ function App() {
       <nav className="bg-white border-b sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-14 md:h-16">
-            {/* Logo/Brand */}
-            <div className="flex items-center gap-2">
+            {/* Logo/Brand - Clickable to Home */}
+            <button
+              onClick={() => setCurrentView('feed')}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
               <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg md:text-xl">P</span>
               </div>
               <span className="text-lg md:text-xl font-bold text-gray-900">Peptide Price</span>
-            </div>
+            </button>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-2">
@@ -165,15 +169,15 @@ function App() {
               </button>
             </div>
 
-            {/* Mobile - Notifications Bell */}
+            {/* Mobile - Three Dots Menu */}
             <div className="md:hidden">
               <button
-                onClick={() => setCurrentView('notifications')}
+                onClick={() => setNavDropdownOpen(!navDropdownOpen)}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors relative"
               >
-                <Bell size={20} className="text-gray-700" />
+                <MoreVertical size={20} className="text-gray-700" />
                 {unreadNotifications > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
                 )}
               </button>
             </div>
@@ -192,7 +196,7 @@ function App() {
         {currentView === 'admin' && <AdminDashboard currentUser={user} />}
       </main>
 
-      {/* Mobile Bottom Navigation - Skool Style */}
+      {/* Mobile Bottom Navigation */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t z-50">
         <div className="flex items-center justify-around px-1" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
           {/* Community/Feed */}
@@ -239,118 +243,95 @@ function App() {
             <span className="text-[10px] mt-0.5 font-medium">Leaderboard</span>
           </button>
 
-          {/* More/Menu */}
+          {/* Profile */}
           <button
-            onClick={() => setNavDropdownOpen(!navDropdownOpen)}
-            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 relative ${
-              navDropdownOpen || ['members', 'profile', 'admin'].includes(currentView) ? 'text-yellow-600' : 'text-gray-600'
+            onClick={() => setCurrentView('profile')}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
+              currentView === 'profile' ? 'text-yellow-600' : 'text-gray-600'
             }`}
           >
-            <UserIcon size={24} strokeWidth={navDropdownOpen || ['members', 'profile', 'admin'].includes(currentView) ? 2.5 : 2} />
-            <span className="text-[10px] mt-0.5 font-medium">More</span>
-            {unreadNotifications > 0 && (
-              <span className="absolute top-1 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-            )}
+            <UserIcon size={24} strokeWidth={currentView === 'profile' ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">Profile</span>
           </button>
-
-          {/* More Menu Dropdown */}
-          {navDropdownOpen && (
-            <>
-              {/* Backdrop */}
-              <div
-                className="fixed inset-0 bg-black bg-opacity-30 z-40"
-                onClick={() => setNavDropdownOpen(false)}
-              ></div>
-
-              {/* Menu */}
-              <div className="absolute bottom-full left-0 right-0 mb-0 bg-white border-t shadow-2xl z-50 max-h-[60vh] overflow-y-auto">
-                {/* Profile/Settings Section */}
-                <button
-                  onClick={() => {
-                    setCurrentView('profile');
-                    setNavDropdownOpen(false);
-                  }}
-                  className={`w-full flex items-center gap-4 px-4 py-4 border-b ${
-                    currentView === 'profile' ? 'bg-yellow-50' : 'hover:bg-gray-50'
-                  }`}
-                >
-                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold">
-                    {user.name.charAt(0)}
-                  </div>
-                  <div className="flex-1 text-left">
-                    <div className="font-semibold text-gray-900">{user.name}</div>
-                    <div className="text-sm text-gray-500">View Profile</div>
-                  </div>
-                  <ChevronDown size={20} className="text-gray-400 -rotate-90" />
-                </button>
-
-                {/* Members */}
-                <button
-                  onClick={() => {
-                    setCurrentView('members');
-                    setNavDropdownOpen(false);
-                  }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 ${
-                    currentView === 'members' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  <Users size={20} />
-                  <span className="font-medium">Members</span>
-                </button>
-
-                {/* Notifications */}
-                <button
-                  onClick={() => {
-                    setCurrentView('notifications');
-                    setNavDropdownOpen(false);
-                  }}
-                  className={`w-full flex items-center justify-between px-4 py-3 ${
-                    currentView === 'notifications' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Bell size={20} />
-                    <span className="font-medium">Notifications</span>
-                  </div>
-                  {unreadNotifications > 0 && (
-                    <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5">
-                      {unreadNotifications > 9 ? '9+' : unreadNotifications}
-                    </span>
-                  )}
-                </button>
-
-                {/* Admin (if applicable) */}
-                {(user.role === 'admin' || user.role === 'moderator') && (
-                  <button
-                    onClick={() => {
-                      setCurrentView('admin');
-                      setNavDropdownOpen(false);
-                    }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 ${
-                      currentView === 'admin' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    <Shield size={20} />
-                    <span className="font-medium">Admin</span>
-                  </button>
-                )}
-
-                {/* Logout */}
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    setNavDropdownOpen(false);
-                  }}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 border-t"
-                >
-                  <LogOut size={20} />
-                  <span className="font-medium">Logout</span>
-                </button>
-              </div>
-            </>
-          )}
         </div>
       </nav>
+
+      {/* Three Dots Menu Dropdown (Mobile) */}
+      {navDropdownOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="md:hidden fixed inset-0 bg-black bg-opacity-30 z-40"
+            onClick={() => setNavDropdownOpen(false)}
+          ></div>
+
+          {/* Menu */}
+          <div className="md:hidden fixed top-14 right-2 w-64 bg-white rounded-lg shadow-2xl z-50 border">
+            {/* Members */}
+            <button
+              onClick={() => {
+                setCurrentView('members');
+                setNavDropdownOpen(false);
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-3 first:rounded-t-lg ${
+                currentView === 'members' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <Users size={20} />
+              <span className="font-medium">Members</span>
+            </button>
+
+            {/* Notifications */}
+            <button
+              onClick={() => {
+                setCurrentView('notifications');
+                setNavDropdownOpen(false);
+              }}
+              className={`w-full flex items-center justify-between px-4 py-3 ${
+                currentView === 'notifications' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Bell size={20} />
+                <span className="font-medium">Notifications</span>
+              </div>
+              {unreadNotifications > 0 && (
+                <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5">
+                  {unreadNotifications > 9 ? '9+' : unreadNotifications}
+                </span>
+              )}
+            </button>
+
+            {/* Admin (if applicable) */}
+            {(user.role === 'admin' || user.role === 'moderator') && (
+              <button
+                onClick={() => {
+                  setCurrentView('admin');
+                  setNavDropdownOpen(false);
+                }}
+                className={`w-full flex items-center gap-3 px-4 py-3 ${
+                  currentView === 'admin' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <Shield size={20} />
+                <span className="font-medium">Admin</span>
+              </button>
+            )}
+
+            {/* Logout */}
+            <button
+              onClick={() => {
+                handleLogout();
+                setNavDropdownOpen(false);
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 border-t last:rounded-b-lg"
+            >
+              <LogOut size={20} />
+              <span className="font-medium">Logout</span>
+            </button>
+          </div>
+        </>
+      )}
 
       {/* Desktop Footer */}
       <footer className="hidden md:block bg-white border-t mt-12">
