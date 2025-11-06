@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { User } from '../../lib/auth';
 import { ArrowLeft, ThumbsUp, MessageSquare, Trash2, Reply } from 'lucide-react';
+import { ImageViewer } from './ImageViewer';
 
 function getYouTubeEmbedUrl(url: string): string {
   if (!url) return '';
@@ -61,6 +62,7 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
   const [loading, setLoading] = useState(false);
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState('');
+  const [imageViewer, setImageViewer] = useState<{ images: string[]; index: number } | null>(null);
 
   useEffect(() => {
     loadComments();
@@ -335,7 +337,8 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
               <img
                 src={post.image_urls[0]}
                 alt="Post image"
-                className="w-full rounded-lg"
+                className="w-full rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                onClick={() => setImageViewer({ images: post.image_urls!, index: 0 })}
               />
             ) : (
               <div className="grid grid-cols-2 gap-2">
@@ -344,7 +347,8 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
                     key={idx}
                     src={url}
                     alt={`Post image ${idx + 1}`}
-                    className="w-full h-64 object-cover rounded-lg"
+                    className="w-full h-64 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                    onClick={() => setImageViewer({ images: post.image_urls!, index: idx })}
                   />
                 ))}
               </div>
@@ -411,6 +415,15 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
           </div>
         )}
       </div>
+
+      {/* Image Viewer Modal */}
+      {imageViewer && (
+        <ImageViewer
+          images={imageViewer.images}
+          initialIndex={imageViewer.index}
+          onClose={() => setImageViewer(null)}
+        />
+      )}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { User } from '../../lib/auth';
 import { MessageSquare, ThumbsUp, Pin, Trash2, PinOff } from 'lucide-react';
 import { PostDetail } from './PostDetail';
 import { CreatePost } from './CreatePost';
+import { ImageViewer } from './ImageViewer';
 
 interface Post {
   id: string;
@@ -35,6 +36,7 @@ export function Feed({ currentUser }: FeedProps) {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [filterCategory, setFilterCategory] = useState('all');
+  const [imageViewer, setImageViewer] = useState<{ images: string[]; index: number } | null>(null);
 
   useEffect(() => {
     loadPosts();
@@ -272,7 +274,11 @@ export function Feed({ currentUser }: FeedProps) {
                         <img
                           src={post.image_urls[0]}
                           alt="Post image"
-                          className="w-full max-h-64 object-cover rounded-lg"
+                          className="w-full max-h-64 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setImageViewer({ images: post.image_urls!, index: 0 });
+                          }}
                         />
                       ) : (
                         <div className="grid grid-cols-2 gap-2">
@@ -281,10 +287,20 @@ export function Feed({ currentUser }: FeedProps) {
                               <img
                                 src={url}
                                 alt={`Post image ${idx + 1}`}
-                                className="w-full h-32 object-cover rounded-lg"
+                                className="w-full h-32 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setImageViewer({ images: post.image_urls!, index: idx });
+                                }}
                               />
                               {idx === 3 && post.image_urls && post.image_urls.length > 4 && (
-                                <div className="absolute inset-0 bg-black bg-opacity-60 rounded-lg flex items-center justify-center">
+                                <div
+                                  className="absolute inset-0 bg-black bg-opacity-60 rounded-lg flex items-center justify-center cursor-pointer"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setImageViewer({ images: post.image_urls!, index: 3 });
+                                  }}
+                                >
                                   <span className="text-white text-xl font-bold">
                                     +{post.image_urls.length - 4}
                                   </span>
@@ -318,6 +334,15 @@ export function Feed({ currentUser }: FeedProps) {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Image Viewer Modal */}
+      {imageViewer && (
+        <ImageViewer
+          images={imageViewer.images}
+          initialIndex={imageViewer.index}
+          onClose={() => setImageViewer(null)}
+        />
       )}
     </div>
   );
