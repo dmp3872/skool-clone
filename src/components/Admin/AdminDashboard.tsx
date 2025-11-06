@@ -38,33 +38,39 @@ export function AdminDashboard({ currentUser }: AdminDashboardProps) {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-        <div className="flex items-center gap-3 mb-4">
-          <Shield className="text-yellow-600" size={32} />
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">Admin Dashboard</h2>
-            <p className="text-gray-600">Manage your community platform</p>
+      <div className="bg-white rounded-lg shadow-sm mb-6">
+        <div className="px-6 py-5 border-b border-gray-200">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+              <Shield className="text-yellow-600" size={22} />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">Admin Dashboard</h2>
+              <p className="text-sm text-gray-600">Manage your community platform</p>
+            </div>
           </div>
         </div>
 
-        <div className="flex gap-2 flex-wrap border-t pt-4">
-          {adminViews.map((view) => {
-            const Icon = view.icon;
-            return (
-              <button
-                key={view.id}
-                onClick={() => setActiveView(view.id as AdminView)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
-                  activeView === view.id
-                    ? 'bg-yellow-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                <Icon size={18} />
-                {view.label}
-              </button>
-            );
-          })}
+        <div className="px-2 py-2">
+          <div className="flex gap-1 overflow-x-auto scrollbar-hide">
+            {adminViews.map((view) => {
+              const Icon = view.icon;
+              return (
+                <button
+                  key={view.id}
+                  onClick={() => setActiveView(view.id as AdminView)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-all whitespace-nowrap ${
+                    activeView === view.id
+                      ? 'bg-yellow-500 text-white shadow-sm'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  <Icon size={18} />
+                  <span>{view.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
