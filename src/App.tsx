@@ -23,6 +23,7 @@ import {
   LogOut,
   Shield,
   ChevronDown,
+  MoreVertical,
 } from 'lucide-react';
 
 type View = 'feed' | 'courses' | 'leaderboard' | 'events' | 'profile' | 'members' | 'notifications' | 'admin';
@@ -90,7 +91,7 @@ function App() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-500"></div>
       </div>
     );
   }
@@ -118,17 +119,21 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-16 md:pb-0">
+      {/* Header */}
       <nav className="bg-white border-b sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">S</span>
+          <div className="flex items-center justify-between h-14 md:h-16">
+            {/* Logo/Brand - Clickable to Home */}
+            <button
+              onClick={() => setCurrentView('feed')}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg md:text-xl">P</span>
               </div>
-              <span className="text-xl font-bold text-gray-900 hidden sm:inline">SKOOL Clone</span>
-              <span className="text-lg font-bold text-gray-900 sm:hidden">SKOOL</span>
-            </div>
+              <span className="text-lg md:text-xl font-bold text-gray-900">Peptide Price</span>
+            </button>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-2">
@@ -140,7 +145,7 @@ function App() {
                     onClick={() => setCurrentView(item.id as View)}
                     className={`relative px-3 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
                       currentView === item.id
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-yellow-500 text-white'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >
@@ -164,78 +169,23 @@ function App() {
               </button>
             </div>
 
-            {/* Mobile Dropdown */}
-            <div className="md:hidden relative">
+            {/* Mobile - Three Dots Menu */}
+            <div className="md:hidden">
               <button
                 onClick={() => setNavDropdownOpen(!navDropdownOpen)}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg font-medium text-gray-900"
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors relative"
               >
-                {(() => {
-                  const activeItem = navItems.find(item => item.id === currentView);
-                  const Icon = activeItem?.icon;
-                  return (
-                    <>
-                      {Icon && <Icon size={18} />}
-                      <span className="hidden sm:inline">{activeItem?.label}</span>
-                      {activeItem?.badge && activeItem.badge > 0 && (
-                        <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5 ml-1">
-                          {activeItem.badge > 9 ? '9+' : activeItem.badge}
-                        </span>
-                      )}
-                    </>
-                  );
-                })()}
-                <ChevronDown size={16} className={`transition-transform ${navDropdownOpen ? 'rotate-180' : ''}`} />
+                <MoreVertical size={20} className="text-gray-700" />
+                {unreadNotifications > 0 && (
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                )}
               </button>
-
-              {navDropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 w-56 bg-white border rounded-lg shadow-lg z-50">
-                  {navItems.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          setCurrentView(item.id as View);
-                          setNavDropdownOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors first:rounded-t-lg ${
-                          currentView === item.id ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <Icon size={18} />
-                          <span className="font-medium">{item.label}</span>
-                        </div>
-                        {item.badge && item.badge > 0 && (
-                          <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">
-                            {item.badge > 9 ? '9+' : item.badge}
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-
-                  <div className="border-t">
-                    <button
-                      onClick={() => {
-                        handleLogout();
-                        setNavDropdownOpen(false);
-                      }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors rounded-b-lg"
-                    >
-                      <LogOut size={18} />
-                      <span className="font-medium">Logout</span>
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-4 py-4 md:py-8">
         {currentView === 'feed' && <Feed currentUser={user} />}
         {currentView === 'courses' && <Courses currentUser={user} />}
         {currentView === 'leaderboard' && <Leaderboard currentUser={user} />}
@@ -246,16 +196,154 @@ function App() {
         {currentView === 'admin' && <AdminDashboard currentUser={user} />}
       </main>
 
-      <footer className="bg-white border-t mt-12">
+      {/* Mobile Bottom Navigation */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t z-50">
+        <div className="flex items-center justify-around px-1" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+          {/* Community/Feed */}
+          <button
+            onClick={() => setCurrentView('feed')}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
+              currentView === 'feed' ? 'text-yellow-600' : 'text-gray-600'
+            }`}
+          >
+            <Home size={24} strokeWidth={currentView === 'feed' ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">Community</span>
+          </button>
+
+          {/* Courses */}
+          <button
+            onClick={() => setCurrentView('courses')}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
+              currentView === 'courses' ? 'text-yellow-600' : 'text-gray-600'
+            }`}
+          >
+            <BookOpen size={24} strokeWidth={currentView === 'courses' ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">Classroom</span>
+          </button>
+
+          {/* Calendar */}
+          <button
+            onClick={() => setCurrentView('events')}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
+              currentView === 'events' ? 'text-yellow-600' : 'text-gray-600'
+            }`}
+          >
+            <Calendar size={24} strokeWidth={currentView === 'events' ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">Calendar</span>
+          </button>
+
+          {/* Leaderboard */}
+          <button
+            onClick={() => setCurrentView('leaderboard')}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
+              currentView === 'leaderboard' ? 'text-yellow-600' : 'text-gray-600'
+            }`}
+          >
+            <Trophy size={24} strokeWidth={currentView === 'leaderboard' ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">Leaderboard</span>
+          </button>
+
+          {/* Profile */}
+          <button
+            onClick={() => setCurrentView('profile')}
+            className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
+              currentView === 'profile' ? 'text-yellow-600' : 'text-gray-600'
+            }`}
+          >
+            <UserIcon size={24} strokeWidth={currentView === 'profile' ? 2.5 : 2} />
+            <span className="text-[10px] mt-0.5 font-medium">Profile</span>
+          </button>
+        </div>
+      </nav>
+
+      {/* Three Dots Menu Dropdown (Mobile) */}
+      {navDropdownOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="md:hidden fixed inset-0 bg-black bg-opacity-30 z-40"
+            onClick={() => setNavDropdownOpen(false)}
+          ></div>
+
+          {/* Menu */}
+          <div className="md:hidden fixed top-14 right-2 w-64 bg-white rounded-lg shadow-2xl z-50 border">
+            {/* Members */}
+            <button
+              onClick={() => {
+                setCurrentView('members');
+                setNavDropdownOpen(false);
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-3 first:rounded-t-lg ${
+                currentView === 'members' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <Users size={20} />
+              <span className="font-medium">Members</span>
+            </button>
+
+            {/* Notifications */}
+            <button
+              onClick={() => {
+                setCurrentView('notifications');
+                setNavDropdownOpen(false);
+              }}
+              className={`w-full flex items-center justify-between px-4 py-3 ${
+                currentView === 'notifications' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Bell size={20} />
+                <span className="font-medium">Notifications</span>
+              </div>
+              {unreadNotifications > 0 && (
+                <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5">
+                  {unreadNotifications > 9 ? '9+' : unreadNotifications}
+                </span>
+              )}
+            </button>
+
+            {/* Admin (if applicable) */}
+            {(user.role === 'admin' || user.role === 'moderator') && (
+              <button
+                onClick={() => {
+                  setCurrentView('admin');
+                  setNavDropdownOpen(false);
+                }}
+                className={`w-full flex items-center gap-3 px-4 py-3 ${
+                  currentView === 'admin' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <Shield size={20} />
+                <span className="font-medium">Admin</span>
+              </button>
+            )}
+
+            {/* Logout */}
+            <button
+              onClick={() => {
+                handleLogout();
+                setNavDropdownOpen(false);
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 border-t last:rounded-b-lg"
+            >
+              <LogOut size={20} />
+              <span className="font-medium">Logout</span>
+            </button>
+          </div>
+        </>
+      )}
+
+      {/* Desktop Footer */}
+      <footer className="hidden md:block bg-white border-t mt-12">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="text-center text-gray-600">
             <p className="mb-2">
               Welcome, <span className="font-semibold">{user.name}</span>! You have{' '}
-              <span className="font-bold text-blue-600">{user.points}</span> points and are{' '}
-              <span className="font-bold text-blue-600">Level {user.level}</span>
+              <span className="font-bold text-yellow-600">{user.points}</span> points and are{' '}
+              <span className="font-bold text-yellow-600">Level {user.level}</span>
             </p>
             <p className="text-sm text-gray-500">
-              Built with React, TypeScript, Tailwind CSS, and Supabase
+              Peptide Price Community - Your trusted peptide resource
             </p>
           </div>
         </div>
