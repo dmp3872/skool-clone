@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  /* Mobile app optimizations */
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  body {
+    overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* iOS safe areas */
+  @supports (padding: max(0px)) {
+    .safe-area-bottom {
+      padding-bottom: max(env(safe-area-inset-bottom), 0px);
+    }
+    .safe-area-top {
+      padding-top: max(env(safe-area-inset-top), 0px);
+    }
+  }
+}
+
 @layer utilities {
   .scrollbar-hide {
     -ms-overflow-style: none;
@@ -9,5 +33,31 @@
   }
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Better touch targets for mobile */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smooth scroll for mobile */
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Active state for mobile buttons */
+  .active-press:active {
+    transform: scale(0.97);
+    transition: transform 0.1s;
+  }
+
+  /* Prevent text selection on touch */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 }

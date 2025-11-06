@@ -114,7 +114,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-        <div className="h-32 bg-gradient-to-r from-blue-600 to-blue-700"></div>
+        <div className="h-32 bg-gradient-to-r from-yellow-500 to-yellow-600"></div>
 
         <div className="px-6 pb-6">
           <div className="flex items-end justify-between -mt-16 mb-4">
@@ -126,7 +126,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
             {!editing && (
               <button
                 onClick={() => setEditing(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
+                className="bg-yellow-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-colors flex items-center gap-2"
               >
                 <Edit2 size={18} />
                 Edit Profile
@@ -144,7 +144,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                 />
               </div>
 
@@ -156,7 +156,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                 />
               </div>
 
@@ -203,7 +203,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
                         value={avatar}
                         onChange={(e) => setAvatar(e.target.value)}
                         placeholder="https://example.com/image.jpg"
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -214,7 +214,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
                 <button
                   onClick={handleSave}
                   disabled={loading}
-                  className="flex-1 bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50"
+                  className="flex-1 bg-yellow-500 text-white py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-colors disabled:opacity-50"
                 >
                   {loading ? 'Saving...' : 'Save Changes'}
                 </button>

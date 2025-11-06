@@ -141,7 +141,7 @@ export function LessonViewer({
           </div>
 
           {!isCompleted && (
-            <div className="mt-8 bg-blue-50 rounded-lg p-6">
+            <div className="mt-8 bg-yellow-50 rounded-lg p-6">
               <h3 className="font-semibold text-gray-900 mb-2">Ready to continue?</h3>
               <p className="text-gray-600 mb-4">
                 Mark this lesson as complete to unlock the next one and earn {lesson.points} points!
@@ -149,7 +149,7 @@ export function LessonViewer({
               <button
                 onClick={handleMarkComplete}
                 disabled={loading}
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50"
+                className="bg-yellow-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors disabled:opacity-50"
               >
                 {loading ? 'Saving...' : `Mark as Complete (+${lesson.points} points)`}
               </button>

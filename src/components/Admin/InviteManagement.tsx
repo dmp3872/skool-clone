@@ -92,7 +92,7 @@ export function InviteManagement({ currentUser }: InviteManagementProps) {
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <button
           onClick={() => setShowCreate(true)}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors flex items-center justify-center gap-2"
         >
           <Plus size={20} />
           Create Invite Link
@@ -136,7 +136,7 @@ export function InviteManagement({ currentUser }: InviteManagementProps) {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleCopyLink(invite.code)}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
                     title="Copy invite link"
                   >
                     {copiedCode === invite.code ? <Check size={20} /> : <Copy size={20} />}
@@ -227,7 +227,7 @@ function CreateInviteForm({ currentUser, onClose }: { currentUser: User; onClose
             onChange={(e) => setMaxUses(e.target.value ? parseInt(e.target.value) : '')}
             min="1"
             placeholder="Unlimited"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
           />
         </div>
 
@@ -241,11 +241,11 @@ function CreateInviteForm({ currentUser, onClose }: { currentUser: User; onClose
             onChange={(e) => setExpiresInDays(e.target.value ? parseInt(e.target.value) : '')}
             min="1"
             placeholder="No expiration"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
           />
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-yellow-50 border border-blue-200 rounded-lg p-4">
           <p className="text-sm text-blue-900">
             A unique invite code will be automatically generated. You can share the link with
             people you want to invite to the community.
@@ -256,7 +256,7 @@ function CreateInviteForm({ currentUser, onClose }: { currentUser: User; onClose
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50"
+            className="flex-1 bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors disabled:opacity-50"
           >
             {loading ? 'Creating...' : 'Create Invite Link'}
           </button>
