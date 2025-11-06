@@ -22,6 +22,8 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [filter, setFilter] = useState<'pending' | 'all'>('pending');
+  const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
+  const [bulkProcessing, setBulkProcessing] = useState(false);
 
   useEffect(() => {
     loadUsers();
@@ -45,6 +47,7 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
 
       if (error) throw error;
       setPendingUsers(data || []);
+      setSelectedUsers(new Set()); // Clear selections when reloading
     } catch (error) {
       console.error('Error loading users:', error);
     } finally {
@@ -119,6 +122,73 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
     }
   }
 
+  async function handleBulkApprove() {
+    if (selectedUsers.size === 0) {
+      alert('Please select at least one user to approve');
+      return;
+    }
+
+    if (!confirm(`Approve ${selectedUsers.size} selected user(s)?`)) return;
+
+    setBulkProcessing(true);
+    try {
+      const userIds = Array.from(selectedUsers);
+
+      // Update all selected users to approved
+      const { error: updateError } = await supabase
+        .from('users')
+        .update({ approval_status: 'approved' })
+        .in('id', userIds);
+
+      if (updateError) throw updateError;
+
+      // Send approval notifications to all users
+      const notifications = userIds.map(userId => ({
+        user_id: userId,
+        type: 'approval',
+        title: 'Account Approved!',
+        message: 'Your account has been approved. Welcome to the community! Get started by introducing yourself in the community feed.',
+        link: '/feed',
+        read: false,
+      }));
+
+      await supabase.from('notifications').insert(notifications);
+
+      // Reload users list
+      await loadUsers();
+      alert(`Successfully approved ${userIds.length} user(s)`);
+    } catch (error: any) {
+      console.error('Error bulk approving users:', error);
+      alert(`Failed to bulk approve users: ${error.message}`);
+    } finally {
+      setBulkProcessing(false);
+    }
+  }
+
+  function toggleUserSelection(userId: string) {
+    const newSelection = new Set(selectedUsers);
+    if (newSelection.has(userId)) {
+      newSelection.delete(userId);
+    } else {
+      newSelection.add(userId);
+    }
+    setSelectedUsers(newSelection);
+  }
+
+  function toggleSelectAll() {
+    if (selectedUsers.size === pendingUsers.filter(u => u.approval_status === 'pending').length) {
+      setSelectedUsers(new Set());
+    } else {
+      const allPendingIds = pendingUsers
+        .filter(u => u.approval_status === 'pending')
+        .map(u => u.id);
+      setSelectedUsers(new Set(allPendingIds));
+    }
+  }
+
+  const pendingCount = pendingUsers.filter(u => u.approval_status === 'pending').length;
+  const allPendingSelected = pendingCount > 0 && selectedUsers.size === pendingCount;
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -146,7 +216,7 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Pending ({pendingUsers.filter(u => u.approval_status === 'pending').length})
+              Pending ({pendingCount})
             </button>
             <button
               onClick={() => setFilter('all')}
@@ -160,6 +230,32 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
             </button>
           </div>
         </div>
+
+        {pendingCount > 0 && filter === 'pending' && (
+          <div className="flex items-center gap-3 pt-4 border-t">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={allPendingSelected}
+                onChange={toggleSelectAll}
+                className="w-4 h-4 text-yellow-600 rounded focus:ring-yellow-500"
+              />
+              <span className="text-sm font-medium text-gray-700">
+                Select All ({pendingCount})
+              </span>
+            </label>
+            {selectedUsers.size > 0 && (
+              <button
+                onClick={handleBulkApprove}
+                disabled={bulkProcessing}
+                className="ml-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <CheckCircle size={16} />
+                Approve Selected ({selectedUsers.size})
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {pendingUsers.length === 0 ? (
@@ -188,6 +284,14 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
               }`}
             >
               <div className="flex items-start gap-4">
+                {user.approval_status === 'pending' && (
+                  <input
+                    type="checkbox"
+                    checked={selectedUsers.has(user.id)}
+                    onChange={() => toggleUserSelection(user.id)}
+                    className="mt-2 w-4 h-4 text-yellow-600 rounded focus:ring-yellow-500"
+                  />
+                )}
                 <img
                   src={user.avatar}
                   alt={user.name}
