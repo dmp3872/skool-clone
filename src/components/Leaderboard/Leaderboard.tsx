@@ -51,19 +51,19 @@ export function Leaderboard({ currentUser }: LeaderboardProps) {
   function getRankIcon(rank: number) {
     switch (rank) {
       case 1:
-        return <Crown className="text-yellow-500" size={24} />;
+        return <Crown className="text-blue-500" size={24} />;
       case 2:
         return <Trophy className="text-gray-400" size={24} />;
       case 3:
-        return <Trophy className="text-orange-600" size={24} />;
+        return <Trophy className="text-blue-600" size={24} />;
       default:
         return null;
     }
   }
 
   function getLevelBadge(level: number) {
-    if (level >= 5) return { label: 'Expert', color: 'bg-yellow-500' };
-    if (level >= 3) return { label: 'Advanced', color: 'bg-yellow-500' };
+    if (level >= 5) return { label: 'Expert', color: 'bg-blue-500' };
+    if (level >= 3) return { label: 'Advanced', color: 'bg-blue-500' };
     if (level >= 2) return { label: 'Intermediate', color: 'bg-green-500' };
     return { label: 'Beginner', color: 'bg-gray-500' };
   }
@@ -71,7 +71,7 @@ export function Leaderboard({ currentUser }: LeaderboardProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
     );
   }
@@ -84,14 +84,14 @@ export function Leaderboard({ currentUser }: LeaderboardProps) {
       </div>
 
       {currentUserRank > 0 && (
-        <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-yellow-100 mb-1">Your Rank</p>
+              <p className="text-blue-100 mb-1">Your Rank</p>
               <p className="text-4xl font-bold">#{currentUserRank}</p>
             </div>
             <div className="text-right">
-              <p className="text-yellow-100 mb-1">Your Points</p>
+              <p className="text-blue-100 mb-1">Your Points</p>
               <p className="text-3xl font-bold">{currentUser.points}</p>
             </div>
           </div>
@@ -116,7 +116,7 @@ export function Leaderboard({ currentUser }: LeaderboardProps) {
                 <div
                   key={user.id}
                   className={`p-4 hover:bg-gray-50 transition-colors ${
-                    isCurrentUser ? 'bg-yellow-50' : ''
+                    isCurrentUser ? 'bg-blue-50' : ''
                   }`}
                 >
                   <div className="flex items-center gap-4">
@@ -139,7 +139,7 @@ export function Leaderboard({ currentUser }: LeaderboardProps) {
                         <h3 className="font-semibold text-gray-900">{user.name}</h3>
                         <span className="text-gray-500 text-sm">@{user.username}</span>
                         {isCurrentUser && (
-                          <span className="text-xs bg-yellow-500 text-white px-2 py-1 rounded-full">
+                          <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded-full">
                             You
                           </span>
                         )}
@@ -153,7 +153,7 @@ export function Leaderboard({ currentUser }: LeaderboardProps) {
 
                     <div className="text-right">
                       <div className="flex items-center gap-2 justify-end">
-                        <Award className="text-yellow-500" size={20} />
+                        <Award className="text-blue-500" size={20} />
                         <span className="text-2xl font-bold text-gray-900">
                           {user.points}
                         </span>
@@ -172,26 +172,26 @@ export function Leaderboard({ currentUser }: LeaderboardProps) {
         <h3 className="text-lg font-bold text-gray-900 mb-4">How to Earn Points</h3>
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-              <span className="text-yellow-600 font-bold">+5</span>
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <span className="text-blue-600 font-bold">+5</span>
             </div>
             <span className="text-gray-700">Create a post</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-              <span className="text-yellow-600 font-bold">+3</span>
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <span className="text-blue-600 font-bold">+3</span>
             </div>
             <span className="text-gray-700">Add a comment</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-              <span className="text-yellow-600 font-bold">+2</span>
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <span className="text-blue-600 font-bold">+2</span>
             </div>
             <span className="text-gray-700">Like a post</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-              <span className="text-yellow-600 font-bold">+10</span>
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <span className="text-blue-600 font-bold">+10</span>
             </div>
             <span className="text-gray-700">Complete a lesson</span>
           </div>

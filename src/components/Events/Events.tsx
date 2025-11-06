@@ -118,7 +118,7 @@ export function Events({ currentUser }: EventsProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
     );
   }
@@ -149,7 +149,7 @@ export function Events({ currentUser }: EventsProps) {
 
                 <div className="grid md:grid-cols-3 gap-4 mb-6">
                   <div className="flex items-center gap-3 text-gray-600">
-                    <Calendar size={20} className="text-yellow-600" />
+                    <Calendar size={20} className="text-blue-600" />
                     <div>
                       <p className="text-sm font-medium">Date</p>
                       <p className="text-sm">
@@ -164,7 +164,7 @@ export function Events({ currentUser }: EventsProps) {
                   </div>
 
                   <div className="flex items-center gap-3 text-gray-600">
-                    <Clock size={20} className="text-yellow-600" />
+                    <Clock size={20} className="text-blue-600" />
                     <div>
                       <p className="text-sm font-medium">Time</p>
                       <p className="text-sm">{event.event_time}</p>
@@ -172,7 +172,7 @@ export function Events({ currentUser }: EventsProps) {
                   </div>
 
                   <div className="flex items-center gap-3 text-gray-600">
-                    <MapPin size={20} className="text-yellow-600" />
+                    <MapPin size={20} className="text-blue-600" />
                     <div>
                       <p className="text-sm font-medium">Location</p>
                       <p className="text-sm">{event.location}</p>
@@ -202,7 +202,7 @@ export function Events({ currentUser }: EventsProps) {
                     onClick={() => handleRSVP(event.id, 'maybe')}
                     className={`flex-1 py-2 rounded-lg font-medium transition-colors ${
                       userRsvp?.status === 'maybe'
-                        ? 'bg-yellow-500 text-white'
+                        ? 'bg-blue-500 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >

@@ -168,7 +168,7 @@ export function Feed({ currentUser }: FeedProps) {
       <div className="md:hidden sticky top-14 z-40 -mx-4 px-4 py-3 bg-gray-50 border-b border-gray-200 mb-3">
         <button
           onClick={() => setShowCreatePost(true)}
-          className="w-full bg-yellow-500 text-white py-2.5 rounded-lg font-semibold active:bg-yellow-600 transition-colors shadow-sm"
+          className="w-full bg-blue-500 text-white py-2.5 rounded-lg font-semibold active:bg-blue-600 transition-colors shadow-sm"
         >
           + Create Post
         </button>
@@ -179,7 +179,7 @@ export function Feed({ currentUser }: FeedProps) {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Community Feed</h2>
         <button
           onClick={() => setShowCreatePost(true)}
-          className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+          className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
         >
           Create New Post
         </button>
@@ -195,7 +195,7 @@ export function Feed({ currentUser }: FeedProps) {
                 onClick={() => setFilterCategory(cat)}
                 className={`px-3 py-1.5 rounded-full font-medium transition-colors text-sm whitespace-nowrap flex-shrink-0 ${
                   filterCategory === cat
-                    ? 'bg-yellow-500 text-white shadow-sm'
+                    ? 'bg-blue-500 text-white shadow-sm'
                     : 'bg-white md:bg-gray-100 text-gray-700 border md:border-0'
                 }`}
               >
@@ -213,7 +213,7 @@ export function Feed({ currentUser }: FeedProps) {
           <p className="text-gray-600 mb-4 md:mb-6">Be the first to start a conversation!</p>
           <button
             onClick={() => setShowCreatePost(true)}
-            className="bg-yellow-500 text-white px-6 py-2 rounded-lg active:bg-yellow-600"
+            className="bg-blue-500 text-white px-6 py-2 rounded-lg active:bg-blue-600"
           >
             Create First Post
           </button>
@@ -227,7 +227,7 @@ export function Feed({ currentUser }: FeedProps) {
               className="bg-white md:rounded-lg md:shadow-sm p-4 md:p-6 border-b md:border-b-0 last:border-b-0 hover:bg-gray-50 md:hover:shadow-md transition-all cursor-pointer active:bg-gray-100"
             >
               {post.is_pinned && (
-                <div className="flex items-center gap-2 text-yellow-600 mb-3">
+                <div className="flex items-center gap-2 text-blue-600 mb-3">
                   <Pin size={16} />
                   <span className="text-sm font-medium">Pinned Post</span>
                 </div>
@@ -256,7 +256,7 @@ export function Feed({ currentUser }: FeedProps) {
                             e.stopPropagation();
                             handleTogglePin(post.id, post.is_pinned);
                           }}
-                          className="p-1.5 text-gray-500 hover:text-yellow-600 hover:bg-yellow-50 rounded transition-colors"
+                          className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
                           title={post.is_pinned ? 'Unpin post' : 'Pin post'}
                         >
                           {post.is_pinned ? <PinOff size={16} /> : <Pin size={16} />}
@@ -275,7 +275,7 @@ export function Feed({ currentUser }: FeedProps) {
                     )}
                   </div>
 
-                  <span className="inline-block px-2 py-0.5 bg-yellow-50 text-yellow-700 text-[10px] md:text-xs font-medium rounded mb-2">
+                  <span className="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] md:text-xs font-medium rounded mb-2">
                     {post.category.replace('-', ' ')}
                   </span>
 
@@ -333,7 +333,7 @@ export function Feed({ currentUser }: FeedProps) {
                         e.stopPropagation();
                         handleLike(post.id);
                       }}
-                      className="flex items-center gap-1.5 hover:text-yellow-600 transition-colors"
+                      className="flex items-center gap-1.5 hover:text-blue-600 transition-colors"
                     >
                       <ThumbsUp size={16} className="md:w-[18px] md:h-[18px]" />
                       <span className="text-xs md:text-sm">{post.likes_count}</span>

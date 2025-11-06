@@ -240,7 +240,7 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
                     setReplyingTo(comment.id);
                     setReplyContent('');
                   }}
-                  className="flex items-center gap-1 text-sm text-gray-500 hover:text-yellow-600 transition-colors"
+                  className="flex items-center gap-1 text-sm text-gray-500 hover:text-blue-600 transition-colors"
                 >
                   <Reply size={14} />
                   <span>Reply</span>
@@ -260,13 +260,13 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
                     onChange={(e) => setReplyContent(e.target.value)}
                     placeholder={`Reply to ${comment.users.name}...`}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   />
                   <div className="flex gap-2 mt-2">
                     <button
                       onClick={() => handleSubmitReply(comment.id)}
                       disabled={loading || !replyContent.trim()}
-                      className="bg-yellow-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-yellow-600 transition-colors disabled:opacity-50"
+                      className="bg-blue-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors disabled:opacity-50"
                     >
                       {loading ? 'Posting...' : 'Post Reply'}
                     </button>
@@ -324,7 +324,7 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
           </div>
         </div>
 
-        <span className="inline-block px-3 py-1 bg-yellow-50 text-yellow-700 text-xs font-medium rounded-full mb-4">
+        <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full mb-4">
           {post.category}
         </span>
 
@@ -388,12 +388,12 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Share your thoughts..."
             rows={4}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           <button
             type="submit"
             disabled={loading || !newComment.trim()}
-            className="bg-yellow-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-colors disabled:opacity-50"
+            className="bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50"
           >
             {loading ? 'Posting...' : 'Post Comment (+3 points)'}
           </button>

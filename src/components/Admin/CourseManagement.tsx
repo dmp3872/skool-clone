@@ -91,7 +91,7 @@ export function CourseManagement({ currentUser }: CourseManagementProps) {
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <button
           onClick={() => setShowCreateCourse(true)}
-          className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
         >
           <Plus size={20} />
           Create New Course
@@ -126,7 +126,7 @@ export function CourseManagement({ currentUser }: CourseManagementProps) {
                   </button>
                   <button
                     onClick={() => setEditingCourse(course)}
-                    className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg"
+                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
                   >
                     <Edit2 size={20} />
                   </button>
@@ -199,7 +199,7 @@ function CourseForm({ currentUser, course, onClose }: { currentUser: User; cours
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
@@ -210,7 +210,7 @@ function CourseForm({ currentUser, course, onClose }: { currentUser: User; cours
             onChange={(e) => setDescription(e.target.value)}
             required
             rows={4}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
@@ -221,7 +221,7 @@ function CourseForm({ currentUser, course, onClose }: { currentUser: User; cours
             value={thumbnail}
             onChange={(e) => setThumbnail(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
@@ -229,7 +229,7 @@ function CourseForm({ currentUser, course, onClose }: { currentUser: User; cours
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors disabled:opacity-50"
+            className="flex-1 bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50"
           >
             {loading ? 'Saving...' : course ? 'Update Course' : 'Create Course'}
           </button>
@@ -316,7 +316,7 @@ function LessonManagement({ courseId, onBack }: { courseId: string; onBack: () =
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <button
           onClick={() => setShowCreate(true)}
-          className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
         >
           <Plus size={20} />
           Add Lesson
@@ -338,7 +338,7 @@ function LessonManagement({ courseId, onBack }: { courseId: string; onBack: () =
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="px-3 py-1 bg-blue-100 text-yellow-700 text-sm font-medium rounded-full">
+                    <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
                       Lesson {lesson.order_num}
                     </span>
                     <h3 className="text-lg font-bold text-gray-900">{lesson.title}</h3>
@@ -352,7 +352,7 @@ function LessonManagement({ courseId, onBack }: { courseId: string; onBack: () =
                 <div className="flex gap-2">
                   <button
                     onClick={() => setEditingLesson(lesson)}
-                    className="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg"
+                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
                   >
                     <Edit2 size={20} />
                   </button>
@@ -447,7 +447,7 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
               onChange={(e) => setOrderNum(parseInt(e.target.value))}
               required
               min="1"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <div>
@@ -458,7 +458,7 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
               onChange={(e) => setPoints(parseInt(e.target.value))}
               required
               min="0"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <div>
@@ -469,7 +469,7 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
               onChange={(e) => setDuration(e.target.value)}
               required
               placeholder="5 min"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -481,7 +481,7 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
@@ -492,7 +492,7 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
@@ -503,7 +503,7 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
             onChange={(e) => setContent(e.target.value)}
             required
             rows={6}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
@@ -514,7 +514,7 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
             value={videoUrl}
             onChange={(e) => setVideoUrl(e.target.value)}
             placeholder="https://www.youtube.com/embed/..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
@@ -522,7 +522,7 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors disabled:opacity-50"
+            className="flex-1 bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50"
           >
             {loading ? 'Saving...' : lesson ? 'Update Lesson' : 'Create Lesson'}
           </button>

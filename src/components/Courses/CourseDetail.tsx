@@ -123,7 +123,7 @@ export function CourseDetail({ course, currentUser, onBack }: CourseDetailProps)
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <div
-                className="bg-yellow-500 h-3 rounded-full transition-all"
+                className="bg-blue-500 h-3 rounded-full transition-all"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -153,11 +153,11 @@ export function CourseDetail({ course, currentUser, onBack }: CourseDetailProps)
                 }`}
               >
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
                     {isCompleted ? (
                       <CheckCircle className="text-green-600" size={20} />
                     ) : isUnlocked ? (
-                      <Play className="text-yellow-600" size={20} />
+                      <Play className="text-blue-600" size={20} />
                     ) : (
                       <Lock className="text-gray-400" size={20} />
                     )}

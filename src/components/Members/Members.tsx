@@ -74,15 +74,15 @@ export function Members({ currentUser }: MembersProps) {
       case 'admin':
         return { label: 'Admin', color: 'bg-red-500' };
       case 'moderator':
-        return { label: 'Moderator', color: 'bg-yellow-500' };
+        return { label: 'Moderator', color: 'bg-blue-500' };
       default:
         return { label: 'Member', color: 'bg-gray-500' };
     }
   }
 
   function getLevelBadge(level: number) {
-    if (level >= 5) return { label: 'Expert', color: 'text-yellow-600' };
-    if (level >= 3) return { label: 'Advanced', color: 'text-yellow-600' };
+    if (level >= 5) return { label: 'Expert', color: 'text-blue-600' };
+    if (level >= 3) return { label: 'Advanced', color: 'text-blue-600' };
     if (level >= 2) return { label: 'Intermediate', color: 'text-green-600' };
     return { label: 'Beginner', color: 'text-gray-600' };
   }
@@ -90,7 +90,7 @@ export function Members({ currentUser }: MembersProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
     );
   }
@@ -111,14 +111,14 @@ export function Members({ currentUser }: MembersProps) {
               placeholder="Search members by name or username..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
           <select
             value={filterRole}
             onChange={(e) => setFilterRole(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Roles</option>
             <option value="admin">Admin</option>
@@ -145,7 +145,7 @@ export function Members({ currentUser }: MembersProps) {
               <div
                 key={member.id}
                 className={`bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow ${
-                  isCurrentUser ? 'ring-2 ring-yellow-500' : ''
+                  isCurrentUser ? 'ring-2 ring-blue-500' : ''
                 }`}
               >
                 <div className="flex items-start gap-4 mb-4">
@@ -158,7 +158,7 @@ export function Members({ currentUser }: MembersProps) {
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-bold text-gray-900">{member.name}</h3>
                       {isCurrentUser && (
-                        <span className="text-xs bg-yellow-500 text-white px-2 py-1 rounded-full">
+                        <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded-full">
                           You
                         </span>
                       )}
@@ -174,7 +174,7 @@ export function Members({ currentUser }: MembersProps) {
 
                 <div className="flex items-center justify-between pt-4 border-t">
                   <div className="flex items-center gap-2">
-                    <Award className="text-yellow-500" size={18} />
+                    <Award className="text-blue-500" size={18} />
                     <span className="font-bold text-gray-900">{member.points}</span>
                     <span className="text-sm text-gray-500">points</span>
                   </div>

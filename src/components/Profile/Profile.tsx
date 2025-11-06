@@ -103,7 +103,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
   }
 
   function getLevelBadge(level: number) {
-    if (level >= 5) return { label: 'Expert', color: 'bg-yellow-500' };
+    if (level >= 5) return { label: 'Expert', color: 'bg-blue-500' };
     if (level >= 3) return { label: 'Advanced', color: 'bg-blue-500' };
     if (level >= 2) return { label: 'Intermediate', color: 'bg-green-500' };
     return { label: 'Beginner', color: 'bg-gray-500' };
@@ -114,7 +114,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-        <div className="h-32 bg-gradient-to-r from-yellow-500 to-yellow-600"></div>
+        <div className="h-32 bg-gradient-to-r from-blue-500 to-blue-600"></div>
 
         <div className="px-6 pb-6">
           <div className="flex items-end justify-between -mt-16 mb-4">
@@ -126,7 +126,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
             {!editing && (
               <button
                 onClick={() => setEditing(true)}
-                className="bg-yellow-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-colors flex items-center gap-2"
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors flex items-center gap-2"
               >
                 <Edit2 size={18} />
                 Edit Profile
@@ -144,7 +144,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
@@ -156,7 +156,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
@@ -203,7 +203,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
                         value={avatar}
                         onChange={(e) => setAvatar(e.target.value)}
                         placeholder="https://example.com/image.jpg"
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -214,7 +214,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
                 <button
                   onClick={handleSave}
                   disabled={loading}
-                  className="flex-1 bg-yellow-500 text-white py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-colors disabled:opacity-50"
+                  className="flex-1 bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50"
                 >
                   {loading ? 'Saving...' : 'Save Changes'}
                 </button>
@@ -247,7 +247,7 @@ export function Profile({ currentUser, onUpdate }: ProfileProps) {
               <div className="grid grid-cols-4 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2 mb-1">
-                    <Award className="text-yellow-500" size={20} />
+                    <Award className="text-blue-500" size={20} />
                     <p className="text-2xl font-bold text-gray-900">{currentUser.points}</p>
                   </div>
                   <p className="text-sm text-gray-600">Points</p>

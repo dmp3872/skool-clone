@@ -212,7 +212,7 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
               onClick={() => setFilter('pending')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filter === 'pending'
-                  ? 'bg-yellow-500 text-white'
+                  ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -222,7 +222,7 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
               onClick={() => setFilter('all')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filter === 'all'
-                  ? 'bg-yellow-500 text-white'
+                  ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -238,7 +238,7 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
                 type="checkbox"
                 checked={allPendingSelected}
                 onChange={toggleSelectAll}
-                className="w-4 h-4 text-yellow-600 rounded focus:ring-yellow-500"
+                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
               />
               <span className="text-sm font-medium text-gray-700">
                 Select All ({pendingCount})
@@ -277,7 +277,7 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
               key={user.id}
               className={`bg-white rounded-lg shadow-sm p-6 border-2 ${
                 user.approval_status === 'pending'
-                  ? 'border-yellow-300'
+                  ? 'border-blue-300'
                   : user.approval_status === 'rejected'
                   ? 'border-red-300'
                   : 'border-gray-200'
@@ -289,7 +289,7 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
                     type="checkbox"
                     checked={selectedUsers.has(user.id)}
                     onChange={() => toggleUserSelection(user.id)}
-                    className="mt-2 w-4 h-4 text-yellow-600 rounded focus:ring-yellow-500"
+                    className="mt-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                   />
                 )}
                 <img
@@ -302,7 +302,7 @@ export function MemberApproval({ currentUser }: MemberApprovalProps) {
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="font-bold text-gray-900">{user.name}</h3>
                     {user.approval_status === 'pending' && (
-                      <span className="flex items-center gap-1 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                      <span className="flex items-center gap-1 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
                         <Clock size={12} />
                         Pending
                       </span>

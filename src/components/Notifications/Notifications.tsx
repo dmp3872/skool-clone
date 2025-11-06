@@ -111,7 +111,7 @@ export function Notifications({ currentUser }: NotificationsProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
     );
   }
@@ -129,7 +129,7 @@ export function Notifications({ currentUser }: NotificationsProps) {
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
-              className="bg-yellow-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
             >
               Mark All Read
             </button>
@@ -149,7 +149,7 @@ export function Notifications({ currentUser }: NotificationsProps) {
             <div
               key={notification.id}
               className={`p-6 hover:bg-gray-50 transition-colors ${
-                !notification.read ? 'bg-yellow-50' : ''
+                !notification.read ? 'bg-blue-50' : ''
               }`}
             >
               <div className="flex items-start gap-4">
@@ -176,7 +176,7 @@ export function Notifications({ currentUser }: NotificationsProps) {
                     {notification.link && (
                       <a
                         href={notification.link}
-                        className="text-yellow-600 hover:text-yellow-700 font-medium flex items-center gap-1"
+                        className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
                       >
                         View
                         <ExternalLink size={14} />
@@ -186,7 +186,7 @@ export function Notifications({ currentUser }: NotificationsProps) {
                     {!notification.read && (
                       <button
                         onClick={() => markAsRead(notification.id)}
-                        className="text-yellow-600 hover:text-yellow-700 font-medium"
+                        className="text-blue-600 hover:text-blue-700 font-medium"
                       >
                         Mark as read
                       </button>
@@ -195,7 +195,7 @@ export function Notifications({ currentUser }: NotificationsProps) {
                 </div>
 
                 {!notification.read && (
-                  <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                 )}
               </div>
             </div>

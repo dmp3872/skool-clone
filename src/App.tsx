@@ -110,7 +110,7 @@ function App() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-500"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500"></div>
       </div>
     );
   }
@@ -148,7 +148,7 @@ function App() {
               onClick={() => setCurrentView('feed')}
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
-              <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg md:text-xl">P</span>
               </div>
               <span className="text-lg md:text-xl font-bold text-gray-900">Peptide Price</span>
@@ -164,7 +164,7 @@ function App() {
                     onClick={() => setCurrentView(item.id as View)}
                     className={`relative px-3 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
                       currentView === item.id
-                        ? 'bg-yellow-500 text-white'
+                        ? 'bg-blue-500 text-white'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >
@@ -222,7 +222,7 @@ function App() {
           <button
             onClick={() => setCurrentView('feed')}
             className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
-              currentView === 'feed' ? 'text-yellow-600' : 'text-gray-600'
+              currentView === 'feed' ? 'text-blue-600' : 'text-gray-600'
             }`}
           >
             <Home size={24} strokeWidth={currentView === 'feed' ? 2.5 : 2} />
@@ -233,7 +233,7 @@ function App() {
           <button
             onClick={() => setCurrentView('courses')}
             className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
-              currentView === 'courses' ? 'text-yellow-600' : 'text-gray-600'
+              currentView === 'courses' ? 'text-blue-600' : 'text-gray-600'
             }`}
           >
             <BookOpen size={24} strokeWidth={currentView === 'courses' ? 2.5 : 2} />
@@ -244,7 +244,7 @@ function App() {
           <button
             onClick={() => setCurrentView('events')}
             className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
-              currentView === 'events' ? 'text-yellow-600' : 'text-gray-600'
+              currentView === 'events' ? 'text-blue-600' : 'text-gray-600'
             }`}
           >
             <Calendar size={24} strokeWidth={currentView === 'events' ? 2.5 : 2} />
@@ -255,7 +255,7 @@ function App() {
           <button
             onClick={() => setCurrentView('leaderboard')}
             className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
-              currentView === 'leaderboard' ? 'text-yellow-600' : 'text-gray-600'
+              currentView === 'leaderboard' ? 'text-blue-600' : 'text-gray-600'
             }`}
           >
             <Trophy size={24} strokeWidth={currentView === 'leaderboard' ? 2.5 : 2} />
@@ -266,7 +266,7 @@ function App() {
           <button
             onClick={() => setCurrentView('profile')}
             className={`flex flex-col items-center justify-center py-2 px-3 flex-1 ${
-              currentView === 'profile' ? 'text-yellow-600' : 'text-gray-600'
+              currentView === 'profile' ? 'text-blue-600' : 'text-gray-600'
             }`}
           >
             <UserIcon size={24} strokeWidth={currentView === 'profile' ? 2.5 : 2} />
@@ -293,7 +293,7 @@ function App() {
                 setNavDropdownOpen(false);
               }}
               className={`w-full flex items-center gap-3 px-4 py-3 first:rounded-t-lg ${
-                currentView === 'members' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+                currentView === 'members' ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
               <Users size={20} />
@@ -307,7 +307,7 @@ function App() {
                 setNavDropdownOpen(false);
               }}
               className={`w-full flex items-center justify-between px-4 py-3 ${
-                currentView === 'notifications' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+                currentView === 'notifications' ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -329,7 +329,7 @@ function App() {
                   setNavDropdownOpen(false);
                 }}
                 className={`w-full flex items-center justify-between px-4 py-3 ${
-                  currentView === 'admin' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
+                  currentView === 'admin' ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -365,8 +365,8 @@ function App() {
           <div className="text-center text-gray-600">
             <p className="mb-2">
               Welcome, <span className="font-semibold">{user.name}</span>! You have{' '}
-              <span className="font-bold text-yellow-600">{user.points}</span> points and are{' '}
-              <span className="font-bold text-yellow-600">Level {user.level}</span>
+              <span className="font-bold text-blue-600">{user.points}</span> points and are{' '}
+              <span className="font-bold text-blue-600">Level {user.level}</span>
             </p>
             <p className="text-sm text-gray-500">
               Peptide Price Community - Your trusted peptide resource

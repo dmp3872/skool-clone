@@ -167,7 +167,7 @@ export function EmailExport({ currentUser }: EmailExportProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -211,7 +211,7 @@ export function EmailExport({ currentUser }: EmailExportProps) {
     <div>
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <div className="flex items-center gap-3 mb-2">
-          <Mail className="text-yellow-600" size={24} />
+          <Mail className="text-blue-600" size={24} />
           <div>
             <h3 className="text-xl font-bold text-gray-900">Email Export</h3>
             <p className="text-sm text-gray-600 mt-1">
@@ -226,14 +226,14 @@ export function EmailExport({ currentUser }: EmailExportProps) {
           const Icon = category.icon;
           const colorClasses = {
             green: 'bg-green-50 border-green-200 text-green-700',
-            yellow: 'bg-yellow-50 border-yellow-200 text-yellow-700',
+            yellow: 'bg-blue-50 border-blue-200 text-blue-700',
             red: 'bg-red-50 border-red-200 text-red-700',
             blue: 'bg-blue-50 border-blue-200 text-blue-700',
           };
 
           const buttonClasses = {
             green: 'bg-green-600 hover:bg-green-700',
-            yellow: 'bg-yellow-600 hover:bg-yellow-700',
+            yellow: 'bg-blue-600 hover:bg-blue-700',
             red: 'bg-red-600 hover:bg-red-700',
             blue: 'bg-blue-600 hover:bg-blue-700',
           };
@@ -285,7 +285,7 @@ export function EmailExport({ currentUser }: EmailExportProps) {
         })}
       </div>
 
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-6">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6">
         <h4 className="font-bold text-gray-900 mb-2">Export Formats</h4>
         <ul className="space-y-1 text-sm text-gray-700">
           <li><strong>CSV Export:</strong> Downloads a spreadsheet file with Name, Email, Role, Approval Status, and Status columns</li>

@@ -43,8 +43,8 @@ export function AdminDashboard({ currentUser }: AdminDashboardProps) {
       <div className="bg-white rounded-lg shadow-sm mb-6">
         <div className="px-6 py-5 border-b border-gray-200">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
-              <Shield className="text-yellow-600" size={22} />
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Shield className="text-blue-600" size={22} />
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-900">Admin Dashboard</h2>
@@ -63,7 +63,7 @@ export function AdminDashboard({ currentUser }: AdminDashboardProps) {
                   onClick={() => setActiveView(view.id as AdminView)}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-all whitespace-nowrap ${
                     activeView === view.id
-                      ? 'bg-yellow-500 text-white shadow-sm'
+                      ? 'bg-blue-500 text-white shadow-sm'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >

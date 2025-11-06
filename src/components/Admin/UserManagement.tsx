@@ -182,7 +182,7 @@ export function UserManagement({ currentUser }: UserManagementProps) {
               placeholder="Search by name, username, or email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -190,7 +190,7 @@ export function UserManagement({ currentUser }: UserManagementProps) {
             <select
               value={filterRole}
               onChange={(e) => setFilterRole(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="all">All Roles</option>
               <option value="admin">Admin</option>
@@ -203,7 +203,7 @@ export function UserManagement({ currentUser }: UserManagementProps) {
                 type="checkbox"
                 checked={showBanned}
                 onChange={(e) => setShowBanned(e.target.checked)}
-                className="w-4 h-4 text-yellow-600 rounded focus:ring-yellow-500"
+                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
               />
               <span className="text-sm font-medium text-gray-700">Show only banned users</span>
             </label>
@@ -239,7 +239,7 @@ export function UserManagement({ currentUser }: UserManagementProps) {
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-bold text-gray-900">{user.name}</h3>
                       {isCurrentUser && (
-                        <span className="text-xs bg-yellow-500 text-white px-2 py-1 rounded-full">
+                        <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded-full">
                           You
                         </span>
                       )}
@@ -259,7 +259,7 @@ export function UserManagement({ currentUser }: UserManagementProps) {
                         user.role === 'admin'
                           ? 'bg-red-100 text-red-700'
                           : user.role === 'moderator'
-                          ? 'bg-blue-100 text-yellow-700'
+                          ? 'bg-blue-100 text-blue-700'
                           : 'bg-gray-100 text-gray-700'
                       }`}>
                         {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
@@ -305,8 +305,8 @@ export function UserManagement({ currentUser }: UserManagementProps) {
                               disabled={user.role === 'moderator'}
                               className={`p-2 rounded-lg transition-colors ${
                                 user.role === 'moderator'
-                                  ? 'bg-blue-100 text-yellow-600'
-                                  : 'text-gray-600 hover:bg-yellow-50'
+                                  ? 'bg-blue-100 text-blue-600'
+                                  : 'text-gray-600 hover:bg-blue-50'
                               }`}
                               title="Make Moderator"
                             >
