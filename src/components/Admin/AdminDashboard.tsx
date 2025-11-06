@@ -4,16 +4,17 @@ import { CourseManagement } from './CourseManagement';
 import { PostModeration } from './PostModeration';
 import { InviteManagement } from './InviteManagement';
 import { UserManagement } from './UserManagement';
-import { BookOpen, MessageSquare, Link as LinkIcon, Users, Shield } from 'lucide-react';
+import { MemberApproval } from './MemberApproval';
+import { BookOpen, MessageSquare, Link as LinkIcon, Users, Shield, UserCheck } from 'lucide-react';
 
 interface AdminDashboardProps {
   currentUser: User;
 }
 
-type AdminView = 'courses' | 'posts' | 'invites' | 'users';
+type AdminView = 'approvals' | 'courses' | 'posts' | 'invites' | 'users';
 
 export function AdminDashboard({ currentUser }: AdminDashboardProps) {
-  const [activeView, setActiveView] = useState<AdminView>('courses');
+  const [activeView, setActiveView] = useState<AdminView>('approvals');
 
   if (currentUser.role !== 'admin' && currentUser.role !== 'moderator') {
     return (
@@ -28,10 +29,11 @@ export function AdminDashboard({ currentUser }: AdminDashboardProps) {
   }
 
   const adminViews = [
+    { id: 'approvals', label: 'Approvals', icon: UserCheck },
+    { id: 'users', label: 'Users', icon: Users },
     { id: 'courses', label: 'Courses', icon: BookOpen },
     { id: 'posts', label: 'Posts', icon: MessageSquare },
     { id: 'invites', label: 'Invites', icon: LinkIcon },
-    { id: 'users', label: 'Users', icon: Users },
   ];
 
   return (
@@ -67,10 +69,11 @@ export function AdminDashboard({ currentUser }: AdminDashboardProps) {
       </div>
 
       <div>
+        {activeView === 'approvals' && <MemberApproval currentUser={currentUser} />}
+        {activeView === 'users' && <UserManagement currentUser={currentUser} />}
         {activeView === 'courses' && <CourseManagement currentUser={currentUser} />}
         {activeView === 'posts' && <PostModeration currentUser={currentUser} />}
         {activeView === 'invites' && <InviteManagement currentUser={currentUser} />}
-        {activeView === 'users' && <UserManagement currentUser={currentUser} />}
       </div>
     </div>
   );

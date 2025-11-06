@@ -12,6 +12,7 @@ export interface User {
   level: number;
   created_at: string;
   last_active: string;
+  approval_status: 'pending' | 'approved' | 'rejected';
 }
 
 export async function registerUser(email: string, password: string, name: string) {
@@ -46,6 +47,7 @@ export async function registerUser(email: string, password: string, name: string
         role: 'member',
         points: 0,
         level: 1,
+        approval_status: 'pending',
       });
 
     if (profileError) throw profileError;
@@ -53,13 +55,13 @@ export async function registerUser(email: string, password: string, name: string
     await supabase.from('notifications').insert({
       user_id: authData.user.id,
       type: 'welcome',
-      title: 'Welcome to the community!',
-      message: 'Get started by introducing yourself in the community feed.',
+      title: 'Account pending approval',
+      message: 'Your account has been created and is pending admin approval. You will be notified once approved.',
       link: '/feed',
       read: false,
     });
 
-    return { success: true, user: authData.user };
+    return { success: true, user: authData.user, requiresApproval: true };
   } catch (error: any) {
     console.error('Registration error:', error);
     return { success: false, error: error.message };
@@ -74,6 +76,30 @@ export async function loginUser(email: string, password: string) {
     });
 
     if (error) throw error;
+
+    // Check user's approval status
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('approval_status, role')
+      .eq('id', data.user.id)
+      .maybeSingle();
+
+    if (userError) throw userError;
+
+    // Allow admins and moderators to always login
+    if (userData && userData.role !== 'admin' && userData.role !== 'moderator') {
+      if (userData.approval_status === 'pending') {
+        // Sign out the user immediately
+        await supabase.auth.signOut();
+        throw new Error('Your account is pending admin approval. Please wait for approval before logging in.');
+      }
+
+      if (userData.approval_status === 'rejected') {
+        // Sign out the user immediately
+        await supabase.auth.signOut();
+        throw new Error('Your account has been rejected. Please contact an administrator for more information.');
+      }
+    }
 
     await supabase
       .from('users')

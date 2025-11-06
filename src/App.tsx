@@ -33,6 +33,7 @@ function App() {
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [currentView, setCurrentView] = useState<View>('feed');
   const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const [pendingApprovals, setPendingApprovals] = useState(0);
   const [navDropdownOpen, setNavDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -43,6 +44,9 @@ function App() {
   useEffect(() => {
     if (user) {
       loadUnreadCount();
+      if (user.role === 'admin' || user.role === 'moderator') {
+        loadPendingApprovals();
+      }
     }
   }, [user, currentView]);
 
@@ -74,6 +78,21 @@ function App() {
       setUnreadNotifications(count || 0);
     } catch (error) {
       console.error('Error loading notification count:', error);
+    }
+  }
+
+  async function loadPendingApprovals() {
+    if (!user) return;
+
+    try {
+      const { count } = await supabase
+        .from('users')
+        .select('*', { count: 'exact', head: true })
+        .eq('approval_status', 'pending');
+
+      setPendingApprovals(count || 0);
+    } catch (error) {
+      console.error('Error loading pending approvals:', error);
     }
   }
 
@@ -114,7 +133,7 @@ function App() {
   ];
 
   if (user.role === 'admin' || user.role === 'moderator') {
-    navItems.push({ id: 'admin', label: 'Admin', icon: Shield, badge: undefined });
+    navItems.push({ id: 'admin', label: 'Admin', icon: Shield, badge: pendingApprovals });
   }
 
   return (
