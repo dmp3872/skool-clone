@@ -328,12 +328,19 @@ function App() {
                   setCurrentView('admin');
                   setNavDropdownOpen(false);
                 }}
-                className={`w-full flex items-center gap-3 px-4 py-3 ${
+                className={`w-full flex items-center justify-between px-4 py-3 ${
                   currentView === 'admin' ? 'bg-yellow-50 text-yellow-600' : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >
-                <Shield size={20} />
-                <span className="font-medium">Admin</span>
+                <div className="flex items-center gap-3">
+                  <Shield size={20} />
+                  <span className="font-medium">Admin</span>
+                </div>
+                {pendingApprovals > 0 && (
+                  <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5">
+                    {pendingApprovals > 9 ? '9+' : pendingApprovals}
+                  </span>
+                )}
               </button>
             )}
 
