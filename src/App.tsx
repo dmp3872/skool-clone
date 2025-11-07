@@ -123,6 +123,39 @@ function App() {
     );
   }
 
+  // Show pending approval screen for non-admin members
+  if (user.approval_status === 'pending' && user.role === 'member') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
+          <div className="text-center">
+            <div className="mx-auto w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+              <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-3">Account Pending Approval</h1>
+            <p className="text-gray-600 mb-6">
+              Thank you for registering! Your account is currently pending admin approval.
+              You will receive a notification once your account has been approved and you can access all features.
+            </p>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <p className="text-sm text-blue-800">
+                <strong>Your account:</strong> {user.email}
+              </p>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="w-full bg-gray-600 text-white py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const navItems = [
     { id: 'feed', label: 'Feed', icon: Home },
     { id: 'courses', label: 'Courses', icon: BookOpen },

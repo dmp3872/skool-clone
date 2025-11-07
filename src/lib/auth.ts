@@ -25,25 +25,25 @@ export async function registerUser(email: string, password: string, name: string
       throw new Error('Password must be at least 6 characters');
     }
 
-    // Check if email is permanently banned
-    const { data: bannedEmail, error: banCheckError } = await supabase
+    // Check if email is permanently banned (can be done without auth)
+    const { data: bannedEmail } = await supabase
       .from('banned_emails')
-      .select('email, reason')
+      .select('email')
       .eq('email', email.toLowerCase())
       .maybeSingle();
 
-    if (banCheckError && banCheckError.code !== 'PGRST116') {
-      // PGRST116 is "not found" which is fine
-      console.error('Error checking banned emails:', banCheckError);
-    }
-
     if (bannedEmail) {
-      throw new Error('This email address has been permanently banned from registration. Please contact an administrator if you believe this is an error.');
+      throw new Error('This email address is not allowed to register.');
     }
 
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          name: name,
+        }
+      }
     });
 
     if (authError) throw authError;
@@ -68,16 +68,21 @@ export async function registerUser(email: string, password: string, name: string
 
     if (profileError) throw profileError;
 
-    await supabase.from('notifications').insert({
-      user_id: authData.user.id,
-      type: 'welcome',
-      title: 'Account pending approval',
-      message: 'Your account has been created and is pending admin approval. You will be notified once approved.',
-      link: '/feed',
-      read: false,
-    });
+    // Try to create notification, but don't fail if it doesn't work
+    try {
+      await supabase.from('notifications').insert({
+        user_id: authData.user.id,
+        type: 'welcome',
+        title: 'Account pending approval',
+        message: 'Your account has been created and is pending admin approval. You will be notified once approved.',
+        link: '/feed',
+        read: false,
+      });
+    } catch (notifError) {
+      console.log('Notification creation failed, but registration succeeded');
+    }
 
-    return { success: true, user: authData.user, requiresApproval: true };
+    return { success: true, user: authData.user, requiresApproval: false };
   } catch (error: any) {
     console.error('Registration error:', error);
     return { success: false, error: error.message };
@@ -102,27 +107,24 @@ export async function loginUser(email: string, password: string) {
 
     if (userError) throw userError;
 
-    // Allow admins and moderators to always login
-    if (userData && userData.role !== 'admin' && userData.role !== 'moderator') {
-      if (userData.approval_status === 'pending') {
-        // Sign out the user immediately
-        await supabase.auth.signOut();
-        throw new Error('Your account is pending admin approval. Please wait for approval before logging in.');
-      }
-
-      if (userData.approval_status === 'rejected') {
-        // Sign out the user immediately
-        await supabase.auth.signOut();
-        throw new Error('Your account has been rejected. Please contact an administrator for more information.');
-      }
+    // Check if account is rejected (only case we block login)
+    if (userData && userData.approval_status === 'rejected') {
+      await supabase.auth.signOut();
+      throw new Error('Your account has been rejected. Please contact an administrator for more information.');
     }
 
+    // Update last active
     await supabase
       .from('users')
       .update({ last_active: new Date().toISOString() })
       .eq('id', data.user.id);
 
-    return { success: true, user: data.user };
+    // Return success with approval status
+    return {
+      success: true,
+      user: data.user,
+      isPending: userData?.approval_status === 'pending' && userData?.role === 'member'
+    };
   } catch (error: any) {
     return { success: false, error: error.message };
   }
