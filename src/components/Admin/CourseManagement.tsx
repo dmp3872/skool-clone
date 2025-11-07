@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { User } from '../../lib/auth';
-import { Plus, Edit2, Trash2, X } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, Upload as UploadIcon, Link as LinkIcon } from 'lucide-react';
+import { VideoUpload } from './VideoUpload';
+import { deleteVideo } from '../../lib/videoStorage';
 
 interface Course {
   id: string;
@@ -17,6 +19,8 @@ interface Lesson {
   description: string;
   content: string;
   video_url: string;
+  video_storage_path?: string;
+  video_type?: string;
   order_num: number;
   points: number;
   duration: string;
@@ -377,6 +381,10 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
   const [description, setDescription] = useState(lesson?.description || '');
   const [content, setContent] = useState(lesson?.content || '');
   const [videoUrl, setVideoUrl] = useState(lesson?.video_url || '');
+  const [videoStoragePath, setVideoStoragePath] = useState(lesson?.video_storage_path || '');
+  const [videoType, setVideoType] = useState<'url' | 'upload'>(
+    (lesson?.video_type as 'url' | 'upload') || 'url'
+  );
   const [orderNum, setOrderNum] = useState(lesson?.order_num || nextOrderNum);
   const [points, setPoints] = useState(lesson?.points || 10);
   const [duration, setDuration] = useState(lesson?.duration || '5 min');
@@ -387,21 +395,32 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
     setLoading(true);
 
     try {
+      const lessonData = {
+        title,
+        description,
+        content,
+        video_url: videoType === 'url' ? videoUrl : null,
+        video_storage_path: videoType === 'upload' ? videoStoragePath : null,
+        video_type: videoType,
+        order_num: orderNum,
+        points,
+        duration,
+      };
+
       if (lesson) {
+        // If switching from upload to URL, delete old video
+        if (lesson.video_type === 'upload' && videoType === 'url' && lesson.video_storage_path) {
+          await deleteVideo(lesson.video_storage_path);
+        }
+
         await supabase
           .from('lessons')
-          .update({ title, description, content, video_url: videoUrl, order_num: orderNum, points, duration })
+          .update(lessonData)
           .eq('id', lesson.id);
       } else {
         await supabase.from('lessons').insert({
           course_id: courseId,
-          title,
-          description,
-          content,
-          video_url: videoUrl,
-          order_num: orderNum,
-          points,
-          duration,
+          ...lessonData,
         });
 
         const { data: course } = await supabase
@@ -424,6 +443,11 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleVideoUploadComplete(storagePath: string) {
+    setVideoStoragePath(storagePath);
+    setVideoType('upload');
   }
 
   return (
@@ -508,14 +532,78 @@ function LessonForm({ courseId, lesson, nextOrderNum, onClose }: { courseId: str
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Video URL (YouTube embed)</label>
-          <input
-            type="url"
-            value={videoUrl}
-            onChange={(e) => setVideoUrl(e.target.value)}
-            placeholder="https://www.youtube.com/embed/..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+          <label className="block text-sm font-medium text-gray-700 mb-4">Video</label>
+
+          {/* Video Type Toggle */}
+          <div className="flex gap-2 mb-4">
+            <button
+              type="button"
+              onClick={() => setVideoType('url')}
+              className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                videoType === 'url'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <LinkIcon size={18} />
+              External URL
+            </button>
+            <button
+              type="button"
+              onClick={() => setVideoType('upload')}
+              className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                videoType === 'upload'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              <UploadIcon size={18} />
+              Upload Video
+            </button>
+          </div>
+
+          {/* Video URL Input */}
+          {videoType === 'url' && (
+            <input
+              type="url"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+              placeholder="https://www.youtube.com/embed/..."
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          )}
+
+          {/* Video Upload Component */}
+          {videoType === 'upload' && (
+            <div>
+              {videoStoragePath ? (
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-green-900 mb-1">Video Uploaded</p>
+                      <p className="text-xs text-green-700">{videoStoragePath.split('/').pop()}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setVideoStoragePath('');
+                        setVideoType('url');
+                      }}
+                      className="text-green-700 hover:text-green-900"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <VideoUpload
+                  courseId={courseId}
+                  lessonId={lesson?.id || 'new'}
+                  onUploadComplete={handleVideoUploadComplete}
+                />
+              )}
+            </div>
+          )}
         </div>
 
         <div className="flex gap-4">

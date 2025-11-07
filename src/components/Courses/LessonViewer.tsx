@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { User } from '../../lib/auth';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { getVideoUrl } from '../../lib/videoStorage';
 
 function getYouTubeEmbedUrl(url: string): string {
   if (!url) return '';
@@ -53,6 +54,19 @@ export function LessonViewer({
   onComplete,
 }: LessonViewerProps) {
   const [loading, setLoading] = useState(false);
+  const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    // If video is uploaded to storage, fetch the signed URL
+    if (lesson.video_type === 'upload' && lesson.video_storage_path) {
+      loadUploadedVideo();
+    }
+  }, [lesson]);
+
+  async function loadUploadedVideo() {
+    const url = await getVideoUrl(lesson.video_storage_path);
+    setUploadedVideoUrl(url);
+  }
 
   async function handleMarkComplete() {
     if (isCompleted) return;
@@ -106,13 +120,32 @@ export function LessonViewer({
 
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         <div className="bg-black aspect-video">
-          <iframe
-            src={getYouTubeEmbedUrl(lesson.video_url)}
-            title={lesson.title}
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          {lesson.video_type === 'upload' ? (
+            // Uploaded video from Supabase Storage
+            uploadedVideoUrl ? (
+              <video
+                src={uploadedVideoUrl}
+                controls
+                className="w-full h-full"
+                controlsList="nodownload"
+              >
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-white">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+              </div>
+            )
+          ) : (
+            // External URL (YouTube, etc.)
+            <iframe
+              src={getYouTubeEmbedUrl(lesson.video_url)}
+              title={lesson.title}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          )}
         </div>
 
         <div className="p-6">
