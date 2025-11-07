@@ -141,7 +141,7 @@ export function VideoUpload({ courseId, lessonId, onUploadComplete, onCancel }: 
               Click to upload or drag and drop
             </p>
             <p className="text-sm text-gray-500">
-              MP4, WebM, OGG, or MOV (max 500MB)
+              MP4, WebM, OGG, or MOV (max 50MB)
             </p>
           </>
         ) : (
@@ -221,7 +221,8 @@ export function VideoUpload({ courseId, lessonId, onUploadComplete, onCancel }: 
         <ul className="space-y-1 text-xs text-gray-700">
           <li>• Recommended format: MP4 (H.264 video, AAC audio)</li>
           <li>• Recommended resolution: 1080p or 720p</li>
-          <li>• Keep file size under 500MB for faster uploads</li>
+          <li>• Keep file size under 50MB (Supabase free tier limit)</li>
+          <li>• For larger videos, use external hosting (YouTube/Vimeo) and paste the URL</li>
           <li>• Videos are stored securely and require authentication to view</li>
         </ul>
       </div>

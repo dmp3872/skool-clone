@@ -22,12 +22,12 @@ export async function uploadVideo(
       };
     }
 
-    // Validate file size (max 500MB)
-    const maxSize = 500 * 1024 * 1024; // 500MB in bytes
+    // Validate file size (max 50MB - Supabase free tier limit)
+    const maxSize = 50 * 1024 * 1024; // 50MB in bytes
     if (file.size > maxSize) {
       return {
         path: '',
-        error: 'File too large. Maximum size is 500MB.',
+        error: 'File too large. Maximum size is 50MB. Consider using external video hosting (YouTube/Vimeo) for larger files.',
       };
     }
 
@@ -136,9 +136,9 @@ export function validateVideoFile(file: File): string | null {
     return 'Invalid file type. Please upload MP4, WebM, OGG, or MOV files.';
   }
 
-  const maxSize = 500 * 1024 * 1024; // 500MB
+  const maxSize = 50 * 1024 * 1024; // 50MB
   if (file.size > maxSize) {
-    return 'File too large. Maximum size is 500MB.';
+    return 'File too large. Maximum size is 50MB. Consider using external video hosting (YouTube/Vimeo) for larger files.';
   }
 
   return null;
