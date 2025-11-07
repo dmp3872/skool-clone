@@ -42,7 +42,8 @@ export async function registerUser(email: string, password: string, name: string
       options: {
         data: {
           name: name,
-        }
+        },
+        emailRedirectTo: undefined
       }
     });
 
