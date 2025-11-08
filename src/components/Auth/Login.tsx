@@ -4,9 +4,10 @@ import { loginUser } from '../../lib/auth';
 interface LoginProps {
   onSuccess: () => void;
   onSwitchToRegister: () => void;
+  onSwitchToForgotPassword?: () => void;
 }
 
-export function Login({ onSuccess, onSwitchToRegister }: LoginProps) {
+export function Login({ onSuccess, onSwitchToRegister, onSwitchToForgotPassword }: LoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -59,9 +60,20 @@ export function Login({ onSuccess, onSwitchToRegister }: LoginProps) {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Password
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              {onSwitchToForgotPassword && (
+                <button
+                  type="button"
+                  onClick={onSwitchToForgotPassword}
+                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Forgot password?
+                </button>
+              )}
+            </div>
             <input
               id="password"
               type="password"

@@ -36,6 +36,7 @@ export async function registerUser(email: string, password: string, name: string
       throw new Error('This email address is not allowed to register.');
     }
 
+    // Sign up the user - this automatically logs them in
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
@@ -52,6 +53,7 @@ export async function registerUser(email: string, password: string, name: string
 
     const username = name.toLowerCase().replace(/\s+/g, '') + Math.floor(Math.random() * 1000);
 
+    // Create user profile - the user is now authenticated, so RLS allows this INSERT
     const { error: profileError } = await supabase
       .from('users')
       .insert({
@@ -67,7 +69,12 @@ export async function registerUser(email: string, password: string, name: string
         approval_status: 'pending',
       });
 
-    if (profileError) throw profileError;
+    if (profileError) {
+      // If profile creation fails, sign out the auth user to prevent orphaned accounts
+      await supabase.auth.signOut();
+      console.error('Profile creation error:', profileError);
+      throw new Error(`Failed to create user profile: ${profileError.message}`);
+    }
 
     // Try to create notification, but don't fail if it doesn't work
     try {
@@ -83,7 +90,13 @@ export async function registerUser(email: string, password: string, name: string
       console.log('Notification creation failed, but registration succeeded');
     }
 
-    return { success: true, user: authData.user, requiresApproval: false };
+    // User is automatically logged in after signUp
+    return {
+      success: true,
+      user: authData.user,
+      requiresApproval: true,
+      autoLoggedIn: true,
+    };
   } catch (error: any) {
     console.error('Registration error:', error);
     return { success: false, error: error.message };
@@ -158,4 +171,58 @@ export async function getCurrentUser(): Promise<User | null> {
 export async function checkAuthState() {
   const { data: { session } } = await supabase.auth.getSession();
   return session;
+}
+
+export async function sendPasswordReset(email: string) {
+  try {
+    if (!email) {
+      throw new Error('Email is required');
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) throw error;
+
+    return {
+      success: true,
+      message: 'Password reset email sent. Please check your inbox.',
+    };
+  } catch (error: any) {
+    console.error('Password reset error:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to send password reset email',
+    };
+  }
+}
+
+export async function updatePassword(newPassword: string) {
+  try {
+    if (!newPassword) {
+      throw new Error('Password is required');
+    }
+
+    if (newPassword.length < 6) {
+      throw new Error('Password must be at least 6 characters');
+    }
+
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (error) throw error;
+
+    return {
+      success: true,
+      message: 'Password updated successfully',
+    };
+  } catch (error: any) {
+    console.error('Password update error:', error);
+    return {
+      success: false,
+      error: error.message || 'Failed to update password',
+    };
+  }
 }

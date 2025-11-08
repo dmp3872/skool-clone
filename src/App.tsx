@@ -4,6 +4,8 @@ import { initializeDatabase } from './lib/database';
 import { supabase } from './lib/supabase';
 import { Login } from './components/Auth/Login';
 import { Register } from './components/Auth/Register';
+import ForgotPassword from './components/Auth/ForgotPassword';
+import ResetPassword from './components/Auth/ResetPassword';
 import { Feed } from './components/Feed/Feed';
 import { Courses } from './components/Courses/Courses';
 import { Leaderboard } from './components/Leaderboard/Leaderboard';
@@ -31,13 +33,21 @@ type View = 'feed' | 'courses' | 'leaderboard' | 'events' | 'profile' | 'members
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [authMode, setAuthMode] = useState<'login' | 'register' | 'forgot-password' | 'reset-password'>('login');
   const [currentView, setCurrentView] = useState<View>('feed');
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [pendingApprovals, setPendingApprovals] = useState(0);
   const [navDropdownOpen, setNavDropdownOpen] = useState(false);
 
   useEffect(() => {
+    // Check if we're on the password reset page
+    const params = new URLSearchParams(window.location.search);
+    const isPasswordReset = window.location.pathname === '/reset-password' || params.get('type') === 'recovery';
+
+    if (isPasswordReset) {
+      setAuthMode('reset-password');
+    }
+
     checkAuth();
     initializeDatabase();
   }, []);
@@ -116,8 +126,20 @@ function App() {
   }
 
   if (!user) {
+    if (authMode === 'forgot-password') {
+      return <ForgotPassword onBack={() => setAuthMode('login')} />;
+    }
+
+    if (authMode === 'reset-password') {
+      return <ResetPassword onSuccess={() => setAuthMode('login')} />;
+    }
+
     return authMode === 'login' ? (
-      <Login onSuccess={handleAuthSuccess} onSwitchToRegister={() => setAuthMode('register')} />
+      <Login
+        onSuccess={handleAuthSuccess}
+        onSwitchToRegister={() => setAuthMode('register')}
+        onSwitchToForgotPassword={() => setAuthMode('forgot-password')}
+      />
     ) : (
       <Register onSuccess={handleAuthSuccess} onSwitchToLogin={() => setAuthMode('login')} />
     );
