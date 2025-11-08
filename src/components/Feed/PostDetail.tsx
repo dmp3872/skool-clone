@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { User } from '../../lib/auth';
-import { ArrowLeft, ThumbsUp, MessageSquare, Trash2, Reply } from 'lucide-react';
+import { ArrowLeft, ThumbsUp, MessageSquare, Trash2, Reply, Store } from 'lucide-react';
 import { ImageViewer } from './ImageViewer';
 import { formatContent } from '../../lib/contentFormatter';
+import { getCompanyById } from '../../lib/companiesData';
 
 function getYouTubeEmbedUrl(url: string): string {
   if (!url) return '';
@@ -328,9 +329,17 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
           </div>
         </div>
 
-        <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full mb-4">
-          {post.category}
-        </span>
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
+          <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
+            {post.category}
+          </span>
+          {post.company_id && getCompanyById(post.company_id) && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-700 text-xs font-medium rounded-full">
+              <Store size={14} />
+              {getCompanyById(post.company_id)!.name}
+            </span>
+          )}
+        </div>
 
         <h1 className="text-3xl font-bold text-gray-900 mb-4">{post.title}</h1>
         <div

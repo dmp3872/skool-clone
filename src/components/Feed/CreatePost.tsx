@@ -1,18 +1,21 @@
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { User } from '../../lib/auth';
-import { X, Video, Image, Upload } from 'lucide-react';
+import { X, Video, Image, Upload, Store } from 'lucide-react';
 import { RichTextEditor } from '../shared/RichTextEditor';
+import { companies } from '../../lib/companiesData';
 
 interface CreatePostProps {
   currentUser: User;
   onClose: () => void;
+  preselectedCompanyId?: string;
 }
 
-export function CreatePost({ currentUser, onClose }: CreatePostProps) {
+export function CreatePost({ currentUser, onClose, preselectedCompanyId }: CreatePostProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('general');
+  const [companyId, setCompanyId] = useState(preselectedCompanyId || '');
   const [videoUrl, setVideoUrl] = useState('');
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -106,6 +109,7 @@ export function CreatePost({ currentUser, onClose }: CreatePostProps) {
         title,
         content,
         category,
+        company_id: companyId || null,
         video_url: videoUrl || null,
         image_urls: imageUrls,
         image_count: imageUrls.length,
@@ -161,6 +165,34 @@ export function CreatePost({ currentUser, onClose }: CreatePostProps) {
               <option value="results">Results</option>
               <option value="questions">Questions</option>
             </select>
+          </div>
+
+          <div>
+            <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="flex items-center gap-2">
+                <Store size={16} />
+                Company (Optional)
+              </div>
+            </label>
+            <select
+              id="company"
+              value={companyId}
+              onChange={(e) => setCompanyId(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              disabled={!!preselectedCompanyId}
+            >
+              <option value="">General Discussion (Not Company Specific)</option>
+              {companies.map((company) => (
+                <option key={company.id} value={company.id}>
+                  {company.name}
+                </option>
+              ))}
+            </select>
+            {companyId && (
+              <p className="text-xs text-gray-500 mt-1">
+                This post will appear on the {companies.find(c => c.id === companyId)?.name} discussion board
+              </p>
+            )}
           </div>
 
           <div>

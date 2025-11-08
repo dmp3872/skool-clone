@@ -267,7 +267,7 @@ function App() {
         {currentView === 'courses' && <Courses currentUser={user} />}
         {currentView === 'leaderboard' && <Leaderboard currentUser={user} />}
         {currentView === 'events' && <Events currentUser={user} />}
-        {currentView === 'companies' && <Companies />}
+        {currentView === 'companies' && <Companies currentUser={user} />}
         {currentView === 'profile' && <Profile currentUser={user} onUpdate={checkAuth} />}
         {currentView === 'members' && <Members currentUser={user} />}
         {currentView === 'notifications' && <Notifications currentUser={user} />}

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { User } from '../../lib/auth';
-import { MessageSquare, ThumbsUp, Pin, Trash2, PinOff } from 'lucide-react';
+import { MessageSquare, ThumbsUp, Pin, Trash2, PinOff, Store } from 'lucide-react';
 import { PostDetail } from './PostDetail';
 import { CreatePost } from './CreatePost';
 import { ImageViewer } from './ImageViewer';
 import { stripFormatting } from '../../lib/contentFormatter';
+import { getCompanyById } from '../../lib/companiesData';
 
 interface Post {
   id: string;
@@ -13,6 +14,7 @@ interface Post {
   title: string;
   content: string;
   category: string;
+  company_id?: string;
   video_url?: string;
   image_urls?: string[];
   image_count?: number;
@@ -276,9 +278,17 @@ export function Feed({ currentUser }: FeedProps) {
                     )}
                   </div>
 
-                  <span className="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] md:text-xs font-medium rounded mb-2">
-                    {post.category.replace('-', ' ')}
-                  </span>
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    <span className="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] md:text-xs font-medium rounded">
+                      {post.category.replace('-', ' ')}
+                    </span>
+                    {post.company_id && getCompanyById(post.company_id) && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-50 text-purple-700 text-[10px] md:text-xs font-medium rounded">
+                        <Store size={10} />
+                        {getCompanyById(post.company_id)!.name}
+                      </span>
+                    )}
+                  </div>
 
                   <h2 className="text-base md:text-xl font-bold text-gray-900 mb-1 md:mb-2 line-clamp-2">{post.title}</h2>
                   <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4 line-clamp-2">{stripFormatting(post.content)}</p>

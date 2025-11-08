@@ -1,10 +1,17 @@
 import { useState } from 'react';
-import { Search, ExternalLink, Copy, Check, Tag } from 'lucide-react';
-import { companies, searchCompanies } from '../../lib/companiesData';
+import { Search, ExternalLink, Copy, Check, Tag, MessageSquare } from 'lucide-react';
+import { companies, searchCompanies, Company } from '../../lib/companiesData';
+import { CompanyDetail } from './CompanyDetail';
+import { User } from '../../lib/auth';
 
-export function Companies() {
+interface CompaniesProps {
+  currentUser: User;
+}
+
+export function Companies({ currentUser }: CompaniesProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
   const filteredCompanies = searchQuery
     ? searchCompanies(searchQuery)
@@ -16,12 +23,22 @@ export function Companies() {
     setTimeout(() => setCopiedCode(null), 2000);
   }
 
+  if (selectedCompany) {
+    return (
+      <CompanyDetail
+        company={selectedCompany}
+        currentUser={currentUser}
+        onBack={() => setSelectedCompany(null)}
+      />
+    );
+  }
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Peptide Suppliers</h1>
         <p className="text-gray-600 mb-6">
-          Browse our curated list of peptide suppliers with exclusive discount codes and referral links.
+          Browse suppliers with exclusive codes, referral links, and discussion boards for each company.
         </p>
 
         {/* Search */}
@@ -105,6 +122,15 @@ export function Companies() {
                   <p className="text-xs text-gray-600 italic">{company.notes}</p>
                 </div>
               )}
+
+              {/* Discussion Board Button */}
+              <button
+                onClick={() => setSelectedCompany(company)}
+                className="mt-3 w-full px-3 py-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors text-sm font-medium flex items-center justify-center gap-2"
+              >
+                <MessageSquare size={16} />
+                Discussion Board
+              </button>
             </div>
           ))}
         </div>
