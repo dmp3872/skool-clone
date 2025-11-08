@@ -3,6 +3,7 @@ import { supabase } from '../../lib/supabase';
 import { User } from '../../lib/auth';
 import { ArrowLeft, ThumbsUp, MessageSquare, Trash2, Reply } from 'lucide-react';
 import { ImageViewer } from './ImageViewer';
+import { formatContent } from '../../lib/contentFormatter';
 
 function getYouTubeEmbedUrl(url: string): string {
   if (!url) return '';
@@ -233,7 +234,10 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
                   </button>
                 )}
               </div>
-              <p className="text-gray-700 mb-2">{comment.content}</p>
+              <div
+                className="text-gray-700 mb-2 formatted-content"
+                dangerouslySetInnerHTML={{ __html: formatContent(comment.content) }}
+              />
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => {
@@ -329,7 +333,10 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
         </span>
 
         <h1 className="text-3xl font-bold text-gray-900 mb-4">{post.title}</h1>
-        <p className="text-gray-700 whitespace-pre-wrap mb-6">{post.content}</p>
+        <div
+          className="text-gray-700 mb-6 formatted-content"
+          dangerouslySetInnerHTML={{ __html: formatContent(post.content) }}
+        />
 
         {post.image_urls && post.image_urls.length > 0 && (
           <div className="mb-6">

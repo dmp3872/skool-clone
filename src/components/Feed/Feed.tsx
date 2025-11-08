@@ -5,6 +5,7 @@ import { MessageSquare, ThumbsUp, Pin, Trash2, PinOff } from 'lucide-react';
 import { PostDetail } from './PostDetail';
 import { CreatePost } from './CreatePost';
 import { ImageViewer } from './ImageViewer';
+import { stripFormatting } from '../../lib/contentFormatter';
 
 interface Post {
   id: string;
@@ -280,7 +281,7 @@ export function Feed({ currentUser }: FeedProps) {
                   </span>
 
                   <h2 className="text-base md:text-xl font-bold text-gray-900 mb-1 md:mb-2 line-clamp-2">{post.title}</h2>
-                  <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4 line-clamp-2">{post.content}</p>
+                  <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4 line-clamp-2">{stripFormatting(post.content)}</p>
 
                   {post.image_urls && post.image_urls.length > 0 && (
                     <div className="mb-4">

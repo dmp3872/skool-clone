@@ -60,4 +60,35 @@
     -ms-user-select: none;
     user-select: none;
   }
+
+  /* Formatted content styles */
+  .formatted-content {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .formatted-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .formatted-content a {
+    word-break: break-all;
+  }
+
+  .formatted-content ul,
+  .formatted-content ol {
+    list-style-position: outside;
+  }
+
+  .formatted-content pre {
+    overflow-x: auto;
+  }
+
+  .formatted-content code {
+    word-break: break-word;
+  }
+
+  .formatted-content blockquote {
+    border-left-width: 4px;
+  }
 }
