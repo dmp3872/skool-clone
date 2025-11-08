@@ -14,6 +14,7 @@ import { Profile } from './components/Profile/Profile';
 import { Members } from './components/Members/Members';
 import { Notifications } from './components/Notifications/Notifications';
 import { AdminDashboard } from './components/Admin/AdminDashboard';
+import { Companies } from './components/Companies/Companies';
 import {
   Home,
   BookOpen,
@@ -26,9 +27,10 @@ import {
   Shield,
   ChevronDown,
   MoreVertical,
+  Store,
 } from 'lucide-react';
 
-type View = 'feed' | 'courses' | 'leaderboard' | 'events' | 'profile' | 'members' | 'notifications' | 'admin';
+type View = 'feed' | 'courses' | 'leaderboard' | 'events' | 'profile' | 'members' | 'notifications' | 'companies' | 'admin';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -183,6 +185,7 @@ function App() {
     { id: 'courses', label: 'Courses', icon: BookOpen },
     { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
     { id: 'events', label: 'Events', icon: Calendar },
+    { id: 'companies', label: 'Companies', icon: Store },
     { id: 'members', label: 'Members', icon: Users },
     { id: 'notifications', label: 'Notifications', icon: Bell, badge: unreadNotifications },
     { id: 'profile', label: 'Profile', icon: UserIcon },
@@ -264,6 +267,7 @@ function App() {
         {currentView === 'courses' && <Courses currentUser={user} />}
         {currentView === 'leaderboard' && <Leaderboard currentUser={user} />}
         {currentView === 'events' && <Events currentUser={user} />}
+        {currentView === 'companies' && <Companies />}
         {currentView === 'profile' && <Profile currentUser={user} onUpdate={checkAuth} />}
         {currentView === 'members' && <Members currentUser={user} />}
         {currentView === 'notifications' && <Notifications currentUser={user} />}
