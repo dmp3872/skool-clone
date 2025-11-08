@@ -42,9 +42,9 @@ function App() {
   const [navDropdownOpen, setNavDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // Check if we're on the password reset page
+    // Check if Supabase sent a password reset link (type=recovery in query params)
     const params = new URLSearchParams(window.location.search);
-    const isPasswordReset = window.location.pathname === '/reset-password' || params.get('type') === 'recovery';
+    const isPasswordReset = params.get('type') === 'recovery';
 
     if (isPasswordReset) {
       setAuthMode('reset-password');

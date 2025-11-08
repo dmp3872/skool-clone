@@ -179,8 +179,10 @@ export async function sendPasswordReset(email: string) {
       throw new Error('Email is required');
     }
 
+    // Redirect to root URL - the app will detect type=recovery in query params
+    // Since this is an SPA without React Router, we can't use /reset-password path
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${window.location.origin}`,
     });
 
     if (error) throw error;

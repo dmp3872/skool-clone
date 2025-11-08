@@ -333,8 +333,8 @@ ORDER BY cmd, policyname;
 **Solution**:
 1. Supabase Dashboard → Authentication → URL Configuration
 2. Set "Site URL" to your app URL (e.g., `http://localhost:5173`)
-3. Add redirect URL to allowed list
-4. Ensure `redirectTo` in code matches configuration
+3. Add your app URL (not /reset-password path) to allowed redirect URLs
+4. The app detects password reset via `type=recovery` query parameter, not URL path
 
 ### Issue: Users can't update their profiles
 
@@ -368,7 +368,8 @@ WHERE id = auth.uid();
 
 2. **URL Configuration** (Authentication → URL Configuration)
    - Site URL: Your app URL (e.g., `http://localhost:5173` for dev)
-   - Redirect URLs: Add your reset password URL (e.g., `http://localhost:5173/reset-password`)
+   - Redirect URLs: Add your app URL (e.g., `http://localhost:5173`)
+   - Note: Since this is an SPA without routing, the reset link goes to the root URL with query params
 
 3. **Email Settings** (Authentication → Settings)
    - For development: Can disable email confirmation
