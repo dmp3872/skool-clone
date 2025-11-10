@@ -296,7 +296,7 @@ Use the formatting toolbar above to:
             <label htmlFor="videoUrl" className="block text-sm font-medium text-gray-700 mb-2">
               <div className="flex items-center gap-2">
                 <Video size={16} />
-                YouTube Video (Optional)
+                Video (Optional)
               </div>
             </label>
             <input
@@ -305,10 +305,10 @@ Use the formatting toolbar above to:
               value={videoUrl}
               onChange={(e) => setVideoUrl(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="https://www.youtube.com/watch?v=..."
+              placeholder="YouTube or Vimeo URL..."
             />
             <p className="text-xs text-gray-500 mt-1">
-              Paste any YouTube URL format (watch, youtu.be, or embed)
+              Supports YouTube and Vimeo - paste any video URL
             </p>
           </div>
 

@@ -5,38 +5,7 @@ import { ArrowLeft, ThumbsUp, MessageSquare, Trash2, Reply, Store } from 'lucide
 import { ImageViewer } from './ImageViewer';
 import { formatContent } from '../../lib/contentFormatter';
 import { getCompanyById } from '../../lib/companiesData';
-
-function getYouTubeEmbedUrl(url: string): string {
-  if (!url) return '';
-
-  // If it's already an embed URL, return it
-  if (url.includes('youtube.com/embed/')) {
-    return url;
-  }
-
-  // Extract video ID from various YouTube URL formats
-  let videoId = '';
-
-  // Format: https://www.youtube.com/watch?v=VIDEO_ID
-  if (url.includes('youtube.com/watch?v=')) {
-    videoId = url.split('v=')[1]?.split('&')[0];
-  }
-  // Format: https://youtu.be/VIDEO_ID
-  else if (url.includes('youtu.be/')) {
-    videoId = url.split('youtu.be/')[1]?.split('?')[0];
-  }
-  // Format: https://www.youtube.com/embed/VIDEO_ID
-  else if (url.includes('youtube.com/embed/')) {
-    videoId = url.split('embed/')[1]?.split('?')[0];
-  }
-
-  if (videoId) {
-    return `https://www.youtube.com/embed/${videoId}`;
-  }
-
-  // If not a YouTube URL, return as is (might be another video platform)
-  return url;
-}
+import { getVideoEmbed } from '../../lib/videoUtils';
 
 interface PostDetailProps {
   post: any;
@@ -372,17 +341,23 @@ export function PostDetail({ post, currentUser, onBack }: PostDetailProps) {
           </div>
         )}
 
-        {post.video_url && (
-          <div className="mb-6 bg-black rounded-lg overflow-hidden aspect-video">
-            <iframe
-              src={getYouTubeEmbedUrl(post.video_url)}
-              title={post.title}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        )}
+        {post.video_url && (() => {
+          const videoEmbed = getVideoEmbed(post.video_url);
+          if (videoEmbed) {
+            return (
+              <div className="mb-6 bg-black rounded-lg overflow-hidden aspect-video">
+                <iframe
+                  src={videoEmbed.embedUrl}
+                  title={post.title}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                  allowFullScreen
+                />
+              </div>
+            );
+          }
+          return null;
+        })()}
 
         <div className="flex items-center gap-6 text-gray-500 border-t pt-4">
           <div className="flex items-center gap-2">
